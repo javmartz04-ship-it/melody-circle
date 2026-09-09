@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Melody Circle · Music and movement for babies 6 to 18 months</title>
+<meta name="description" content="Melody Circle is a cozy music and movement class for babies 6 to 18 months and their grown-ups. Songs, scarves, shakers, movement and bonding, weekly at Oakleaf Studio.">
+<meta property="og:title" content="Melody Circle · Little moments. Big connection.">
+<meta property="og:description" content="A music and movement experience for little ones and their grown-ups. Reserve your spot in an upcoming circle.">
+<meta property="og:image" content="assets/hero.jpg">
+<meta name="theme-color" content="#F8F2E8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 30'%3E%3Cpath fill='%23D7A685' d='M16 29C6 21 0 15 0 9A8 8 0 0 1 16 6a8 8 0 0 1 16 3c0 6-6 12-16 20Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/hero.jpg" media="(min-width: 641px)">
+<link rel="preload" as="image" href="assets/hero-m.jpg" media="(max-width: 640px)">
+<link rel="stylesheet" href="assets/melody.css">
+</head>
+<body>
+
+<!-- ============ sprite: logo, hand-drawn marks, line icons ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="mc-sprig" viewBox="0 0 100 140">
+    <path class="stem" d="M50 138 C 49 100, 53 60, 52 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <path class="leaf" style="--i:0" d="M49 112 C 34 108, 22 96, 22 84 C 36 86, 47 98, 49 112 Z" fill="currentColor"/>
+    <path class="leaf" style="--i:1" d="M51 100 C 66 96, 78 84, 78 72 C 64 74, 53 86, 51 100 Z" fill="currentColor"/>
+    <path class="leaf" style="--i:2" d="M50 84 C 37 80, 27 70, 27 60 C 40 62, 49 72, 50 84 Z" fill="currentColor"/>
+    <path class="leaf" style="--i:3" d="M52 72 C 65 68, 75 58, 75 48 C 62 50, 53 60, 52 72 Z" fill="currentColor"/>
+    <path class="leaf" style="--i:4" d="M51 58 C 41 55, 33 47, 33 39 C 43 41, 50 49, 51 58 Z" fill="currentColor"/>
+    <path class="leaf" style="--i:5" d="M52 46 C 62 43, 70 35, 70 27 C 60 29, 53 37, 52 46 Z" fill="currentColor"/>
+    <path class="leaf" style="--i:6" d="M52 30 C 46 22, 46 12, 52 6 C 58 12, 58 22, 52 30 Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="mc-flourish" viewBox="0 0 60 30">
+    <path d="M2 16 C 20 14, 40 14, 58 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M14 15 C 12 8, 16 3, 22 3 C 22 9, 19 14, 14 15 Z" fill="currentColor"/>
+    <path d="M30 14 C 28 7, 32 2, 38 2 C 38 8, 35 13, 30 14 Z" fill="currentColor"/>
+    <path d="M46 15 C 44 9, 48 5, 53 5 C 53 10, 50 14, 46 15 Z" fill="currentColor"/>
+    <path d="M22 17 C 20 24, 24 28, 30 28 C 30 22, 27 18, 22 17 Z" fill="currentColor" opacity=".8"/>
+    <path d="M40 17 C 38 23, 42 27, 47 27 C 47 22, 44 18, 40 17 Z" fill="currentColor" opacity=".8"/>
+  </symbol>
+  <symbol id="mc-note" viewBox="0 0 40 56">
+    <ellipse cx="14" cy="45" rx="11" ry="7.5" transform="rotate(-18 14 45)" fill="currentColor"/>
+    <path d="M24 42 V5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M24 5 C 33 9, 38 16, 36 27 C 35 19, 31 15, 24 13 Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="mc-heart" viewBox="0 0 32 30">
+    <path d="M16 29 C 6 21, 0 15, 0 9 A 8 8 0 0 1 16 6 A 8 8 0 0 1 32 9 C 32 15, 26 21, 16 29 Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="mc-roundel" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="96" fill="#FFFDF9" stroke="#C6935A" stroke-width="1.6"/>
+    <circle cx="100" cy="100" r="89" fill="none" stroke="#C6935A" stroke-width=".7" opacity=".55"/>
+    <use href="#mc-sprig" x="80" y="22" width="40" height="52" color="#939377"/>
+    <text x="100" y="106" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-weight="500" font-size="31" letter-spacing="2.5" fill="#3A3A2A">MELODY</text>
+    <text x="100" y="128" text-anchor="middle" font-family="'Nunito', Arial, sans-serif" font-weight="700" font-size="12.5" letter-spacing="6.5" fill="#5E6249">CIRCLE</text>
+    <text x="100" y="147" text-anchor="middle" font-family="'Nunito', Arial, sans-serif" font-weight="600" font-size="8.2" letter-spacing="1.1" fill="#6B6357">songs <tspan fill="#D7A685">•</tspan> connection <tspan fill="#D7A685">•</tspan> growth</text>
+    <use href="#mc-heart" x="93" y="158" width="14" height="13" color="#D7A685"/>
+  </symbol>
+  <symbol id="ic-arrow" viewBox="0 0 24 24"><path d="M4 12h14M12 6l6 6-6 6"/></symbol>
+  <symbol id="ic-note" viewBox="0 0 48 48"><ellipse cx="17" cy="35" rx="8" ry="5.5" transform="rotate(-15 17 35)"/><path d="M24.5 33.5V9c6 2 10 6.5 9 14"/></symbol>
+  <symbol id="ic-scarf" viewBox="0 0 48 48"><path d="M6 21c6-12 13-12 19 0s13 12 19 0"/><path d="M6 31c6-12 13-12 19 0s13 12 19 0" opacity=".5"/></symbol>
+  <symbol id="ic-shaker" viewBox="0 0 48 48"><circle cx="19" cy="19" r="10.5"/><path d="M26.5 26.5 39 39" stroke-width="4.5"/><circle cx="15" cy="16" r="1.3" fill="currentColor" stroke="none"/><circle cx="21.5" cy="14" r="1.3" fill="currentColor" stroke="none"/><circle cx="20" cy="22" r="1.3" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="ic-leaf" viewBox="0 0 48 48"><path d="M9 39C9 21 21 9 40 9c0 19-12 31-31 30Z"/><path d="M11 37c8-8 16-16 24-23"/></symbol>
+  <symbol id="ic-heart" viewBox="0 0 48 48"><path d="M24 40C13 31 7 25 7 18a8.5 8.5 0 0 1 17-2 8.5 8.5 0 0 1 17 2c0 7-6 13-17 22Z"/></symbol>
+  <symbol id="ic-flower" viewBox="0 0 40 40"><circle cx="20" cy="20" r="4"/><ellipse cx="20" cy="9" rx="4.2" ry="6.5"/><ellipse cx="20" cy="9" rx="4.2" ry="6.5" transform="rotate(72 20 20)"/><ellipse cx="20" cy="9" rx="4.2" ry="6.5" transform="rotate(144 20 20)"/><ellipse cx="20" cy="9" rx="4.2" ry="6.5" transform="rotate(216 20 20)"/><ellipse cx="20" cy="9" rx="4.2" ry="6.5" transform="rotate(288 20 20)"/></symbol>
+</svg>
+
+<div id="nav-sentinel" style="position:absolute;top:80px;height:1px;width:1px"></div>
+
+<!-- ============ nav ============ -->
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top" aria-label="Melody Circle, back to top">Melody Circle</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#classes">Classes</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn sm nav-cta" href="reserve.html"><span>Reserve Your Spot</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></a>
+    <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
+  </div>
+</header>
+<div class="menu" id="menu">
+  <ul>
+    <li style="--i:0"><a href="#about">About</a></li>
+    <li style="--i:1"><a href="#classes">Classes</a></li>
+    <li style="--i:2"><a href="#faq">FAQ</a></li>
+    <li style="--i:3"><a href="#contact">Contact</a></li>
+    <li style="--i:4"><a class="btn lg" href="reserve.html"><span>Reserve Your Spot</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></a></li>
+  </ul>
+</div>
+
+<main id="top">
+
+<!-- ============ hero ============ -->
+<section class="hero" aria-labelledby="hero-h">
+  <div class="col hero-grid">
+    <div class="hero-copy">
+      <p class="tagline fade-in" style="--i:0"><span>songs</span><i></i><span>connection</span><i></i><span>growth</span></p>
+      <h1 class="h1 display" id="hero-h">
+        <svg class="deco deco-sprig draw" viewBox="0 0 100 140" aria-hidden="true">
+          <path class="stem" d="M50 138 C 49 100, 53 60, 52 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path class="leaf" style="--i:0" d="M49 112 C 34 108, 22 96, 22 84 C 36 86, 47 98, 49 112 Z" fill="currentColor"/>
+          <path class="leaf" style="--i:1" d="M51 100 C 66 96, 78 84, 78 72 C 64 74, 53 86, 51 100 Z" fill="currentColor"/>
+          <path class="leaf" style="--i:2" d="M50 84 C 37 80, 27 70, 27 60 C 40 62, 49 72, 50 84 Z" fill="currentColor"/>
+          <path class="leaf" style="--i:3" d="M52 72 C 65 68, 75 58, 75 48 C 62 50, 53 60, 52 72 Z" fill="currentColor"/>
+          <path class="leaf" style="--i:4" d="M51 58 C 41 55, 33 47, 33 39 C 43 41, 50 49, 51 58 Z" fill="currentColor"/>
+          <path class="leaf" style="--i:5" d="M52 46 C 62 43, 70 35, 70 27 C 60 29, 53 37, 52 46 Z" fill="currentColor"/>
+          <path class="leaf" style="--i:6" d="M52 30 C 46 22, 46 12, 52 6 C 58 12, 58 22, 52 30 Z" fill="currentColor"/>
+        </svg>
+        <svg class="deco deco-note fade-in" style="--i:3" aria-hidden="true"><use href="#mc-note"/></svg>
+        <span class="line" style="--i:1"><span>Little moments.</span></span>
+        <span class="line em" style="--i:2"><span>Big connection.</span></span>
+      </h1>
+      <p class="lead fade-in" style="--i:3">A music and movement experience for <b>little ones and their grown-ups.</b></p>
+      <div class="cta-row fade-in" style="--i:4">
+        <a class="btn lg" href="reserve.html"><span>Reserve Your Spot</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></a>
+        <p class="risk"><span data-sessions>Weekly</span> sessions at Oakleaf Studio. Babies 6 to 18 months. No musical experience needed.</p>
+        <svg class="deco deco-sprig-cta fade-in" style="--i:5" aria-hidden="true"><use href="#mc-flourish"/></svg>
+      </div>
+    </div>
+    <div class="hero-fig">
+      <div class="bezel img">
+        <div class="core">
+          <picture>
+            <source media="(max-width: 640px)" srcset="assets/hero-m.jpg">
+            <img src="assets/hero.jpg" width="2400" height="1601" alt="A mother kneeling on a woven rug beside her baby, who is reaching for wooden toys in a bright, plant-filled room" fetchpriority="high">
+          </picture>
+        </div>
+      </div>
+      <div class="sticker" aria-hidden="true"><svg><use href="#mc-roundel"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ about: problem, reframe, mechanism ============ -->
+<section class="about" id="about" aria-labelledby="about-h">
+  <svg class="wave top" viewBox="0 0 1440 78" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 54 C 240 78, 430 12, 700 26 C 960 40, 1180 2, 1440 18 L1440 78 L0 78 Z"/></svg>
+  <svg class="deco deco-note-l" aria-hidden="true"><use href="#mc-note"/></svg>
+  <svg class="deco deco-note-r" aria-hidden="true"><use href="#mc-note"/></svg>
+  <svg class="deco deco-sprig-r" aria-hidden="true"><use href="#mc-sprig"/></svg>
+  <div class="col">
+    <h2 class="h2 display" id="about-h" data-reveal>It isn't a music lesson. <span class="em">It's time for the two of you.</span></h2>
+    <p class="lead" data-reveal style="--i:1">The days are long, the weeks vanish, and most of what you do with your baby, you do alone at home.</p>
+    <p class="p" data-reveal style="--i:2">Melody Circle is a cozy music and movement class designed for babies 6 to 18 months and their grown-ups. Through songs, movement, and play, we build connection, spark joy, and support your little one's growth.</p>
+
+    <div class="beats-head" data-reveal><p class="eyebrow center">How a circle works</p></div>
+    <div class="beats">
+      <article class="beat" data-reveal style="--i:0">
+        <span class="numeral">01</span>
+        <div class="orb sage"><svg aria-hidden="true"><use href="#ic-note"/></svg></div>
+        <h3 class="h3">Sing</h3>
+        <p class="p">Nurturing songs that fill little hearts.</p>
+      </article>
+      <article class="beat" data-reveal style="--i:1">
+        <span class="numeral">02</span>
+        <div class="orb peach"><svg aria-hidden="true"><use href="#ic-heart"/></svg></div>
+        <h3 class="h3">Connect</h3>
+        <p class="p">Meaningful moments that bring you closer.</p>
+      </article>
+      <article class="beat" data-reveal style="--i:2">
+        <span class="numeral">03</span>
+        <div class="orb tan"><svg aria-hidden="true"><use href="#ic-flower"/></svg></div>
+        <h3 class="h3">Grow</h3>
+        <p class="p">Playful experiences that support development.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ photo strip ============ -->
+<section class="strip" aria-label="Moments from the circle">
+  <div class="col strip-grid">
+    <figure class="shot p" style="--rot:-1.6deg; --i:0" data-reveal><img src="assets/strip-peek.jpg" width="975" height="1300" loading="lazy" alt="A baby peeking out from behind a sheer curtain"></figure>
+    <figure class="shot s" style="--rot:1.2deg; --i:1" data-reveal><img src="assets/strip-rattle.jpg" width="867" height="1300" loading="lazy" alt="A baby in a knit sweater holding a wooden rattle" style="object-position:50% 20%"></figure>
+    <figure class="shot l" style="--rot:-.8deg; --i:2" data-reveal><img src="assets/strip-sway.jpg" width="867" height="1300" loading="lazy" alt="A mother holding her baby up in the air in a bright living room" style="object-position:50% 28%"></figure>
+    <figure class="shot p" style="--rot:1.6deg; --i:3" data-reveal><img src="assets/strip-nose.jpg" width="867" height="1300" loading="lazy" alt="A mother touching noses with her baby by a window"></figure>
+  </div>
+</section>
+
+<!-- ============ band: made for little music lovers / what to expect ============ -->
+<section class="band" id="classes" aria-labelledby="band-h">
+  <svg class="wave top" viewBox="0 0 1440 78" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 50 C 260 10, 480 74, 760 40 C 1020 8, 1240 60, 1440 30 L1440 78 L0 78 Z"/></svg>
+  <svg class="wave bottom" viewBox="0 0 1440 78" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 50 C 260 10, 480 74, 760 40 C 1020 8, 1240 60, 1440 30 L1440 78 L0 78 Z"/></svg>
+  <div class="col band-grid">
+    <div data-reveal>
+      <h2 class="h2 display" id="band-h">Made for little music lovers<svg class="heart" aria-hidden="true"><use href="#mc-heart"/></svg></h2>
+      <p class="age">6 to 18 months</p>
+    </div>
+    <div class="band-rule" aria-hidden="true"></div>
+    <div class="expect" data-reveal style="--i:1">
+      <p class="eyebrow" style="grid-column:1 / -1; margin-bottom:-6px">What to expect</p>
+      <ul style="display:contents">
+        <li><div class="ic"><svg aria-hidden="true"><use href="#ic-note"/></svg></div><span>songs</span></li>
+        <li><div class="ic"><svg aria-hidden="true"><use href="#ic-scarf"/></svg></div><span>scarves</span></li>
+        <li><div class="ic"><svg aria-hidden="true"><use href="#ic-shaker"/></svg></div><span>shakers</span></li>
+        <li><div class="ic"><svg aria-hidden="true"><use href="#ic-leaf"/></svg></div><span>movement</span></li>
+        <li><div class="ic"><svg aria-hidden="true"><use href="#ic-heart"/></svg></div><span>bonding</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ schedule ============ -->
+<section class="schedule" aria-labelledby="sched-h">
+  <div class="col">
+    <div class="sched-head" data-reveal>
+      <h2 class="h2 display" id="sched-h">Upcoming Circles<svg class="flourish" aria-hidden="true"><use href="#mc-flourish"/></svg></h2>
+    </div>
+    <div class="rows" id="schedule-rows" data-reserve="reserve.html"></div>
+    <p class="sched-note" data-reveal>Grown-up and baby attend together. Pick the day that fits your week.</p>
+  </div>
+</section>
+
+<!-- ============ qualification ============ -->
+<section class="fit" aria-labelledby="fit-h">
+  <div class="col">
+    <div class="fit-head" data-reveal><h2 class="h2 display" id="fit-h">Is this the right circle for you?</h2></div>
+    <div class="fit-grid">
+      <div class="fit-col yes" data-reveal>
+        <h3 class="h3"><svg style="color:var(--peach)" aria-hidden="true"><use href="#mc-heart"/></svg>Perfect for you if</h3>
+        <ul>
+          <li>Your baby is between 6 and 18 months.</li>
+          <li>You want a weekly rhythm with other grown-ups and their little ones.</li>
+          <li>You would rather sing along, in tune or not, than watch from the side.</li>
+          <li>You want something that is for your baby and restores you too.</li>
+        </ul>
+      </div>
+      <div class="fit-rule" aria-hidden="true"></div>
+      <div class="fit-col no" data-reveal style="--i:1">
+        <h3 class="h3"><svg style="color:var(--sage); fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round" aria-hidden="true"><use href="#ic-leaf"/></svg>Maybe not yet if</h3>
+        <ul>
+          <li>Your baby is under 6 months. The songs and movement are built for sitting, reaching, and early crawling.</li>
+          <li>You are looking for a drop-off class. Grown-ups stay and take part.</li>
+          <li>You want formal music instruction. This is play with a purpose, not lessons.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ faq ============ -->
+<section class="faq" id="faq" aria-labelledby="faq-h">
+  <svg class="wave top" viewBox="0 0 1440 78" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 40 C 200 70, 440 8, 720 34 C 1000 60, 1240 14, 1440 44 L1440 78 L0 78 Z"/></svg>
+  <div class="col">
+    <div class="faq-head" data-reveal><h2 class="h2 display" id="faq-h">Frequently Asked Questions.</h2></div>
+    <div class="bezel" data-reveal style="--i:1">
+      <div class="core">
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Do I need to be able to sing?</span><span class="pm" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>No. Your voice is your baby's favorite sound, in tune or not. The songs are simple and repeat every week, so by the second circle you will know them by heart.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>What ages is Melody Circle for?</span><span class="pm" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Babies from 6 to 18 months, together with a parent or grown-up who stays for the whole circle and takes part.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>What should we bring?</span><span class="pm" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Just the two of you, dressed to sit on the floor. Scarves, shakers and the songs are part of every circle.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>What if my baby cries, crawls off, or falls asleep?</span><span class="pm" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>That is part of every circle. Babies wander, feed, and nap. Follow your little one. The songs carry on, and they drift back when they are ready.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Where are the circles held?</span><span class="pm" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>At Oakleaf Studio. Choose the day and time that suits your week from the upcoming circles above.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>How do I reserve a spot?</span><span class="pm" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Pick a circle, tell us about you and your little one, and reserve your spot. You will hear back from us to confirm the details of your first session.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ closing + footer plate ============ -->
+<section class="close" id="contact" aria-labelledby="close-h">
+  <svg class="wave top" viewBox="0 0 1440 78" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 36 C 240 72, 460 4, 740 30 C 1010 56, 1230 10, 1440 42 L1440 78 L0 78 Z"/></svg>
+  <svg class="deco deco-leaf-l" aria-hidden="true"><use href="#mc-sprig"/></svg>
+  <svg class="deco deco-leaf-r" aria-hidden="true"><use href="#mc-sprig"/></svg>
+  <div class="col close-in">
+    <h2 class="h2 display" id="close-h" data-reveal>Come sing with us.<svg class="heart" aria-hidden="true"><use href="#mc-heart"/></svg></h2>
+    <div class="cta-row center" data-reveal style="--i:1">
+      <a class="btn lg" href="reserve.html"><span>Reserve Your Spot</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></a>
+      <p class="risk">Choose your day on the next step. You'll hear back from us to confirm your spot.</p>
+    </div>
+    <figure class="close-shot" data-reveal style="--i:2"><img src="assets/shakers.jpg" width="800" height="1200" loading="lazy" alt="Three wooden ball rattles resting on a white sheet"></figure>
+  </div>
+  <div class="col">
+    <footer class="foot">
+      <div class="foot-brand">
+        <div class="roundel" aria-hidden="true"><svg><use href="#mc-roundel"/></svg></div>
+        <div>
+          <span class="brand" style="min-height:0">Melody Circle</span>
+          <p class="tagline"><span>songs</span><i></i><span>connection</span><i></i><span>growth</span></p>
+        </div>
+      </div>
+      <p>Oakleaf Studio</p>
+      <p>© 2026 Melody Circle</p>
+    </footer>
+  </div>
+</section>
+
+</main>
+
+<script src="assets/circles.js"></script>
+<script src="assets/melody.js"></script>
+</body>
+</html>
