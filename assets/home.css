@@ -123,6 +123,8 @@ html.fonts-in .draw .sp-leaf{opacity:1; scale:1}
 .brand{display:inline-flex; align-items:center; gap:12px; min-height:44px; font-family:var(--display); font-weight:500; font-size:17px; letter-spacing:.2em; text-transform:uppercase; color:var(--sage-deep)}
 .brand .mini{width:38px; height:38px; flex:none; filter:drop-shadow(0 4px 8px rgba(58,58,42,.12))}
 .brand .mini svg{width:100%; height:100%; display:block}
+.brand .mini.mark{width:26px; height:42px; filter:drop-shadow(0 3px 6px rgba(58,58,42,.14))}
+.brand .mini.mark svg{width:100%; height:100%}
 .nav-links{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; gap:34px}
 .nav-links a{font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--body); display:inline-flex; align-items:center; min-height:44px; position:relative}
 .nav-links a::after{content:""; position:absolute; left:0; right:0; bottom:8px; height:2px; border-radius:2px; background:var(--peach); transform:scaleX(0); transform-origin:left; transition:transform .5s var(--ease)}
@@ -325,6 +327,7 @@ html.fonts-in .sticker{scale:1; opacity:1}
   .nav-links,.nav-cta{display:none} .burger{display:block}
   .nav-in{padding:0 8px 0 12px; height:60px}
   .brand{font-size:15px; letter-spacing:.16em} .brand .mini{width:34px; height:34px}
+  .brand .mini.mark{width:22px; height:36px}
   .hero{padding:126px 0 90px}
   .hero-grid{grid-template-columns:minmax(0,1fr); gap:40px}
   .hero-copy{padding:0}
