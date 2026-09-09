@@ -105,7 +105,7 @@
       var n = sessionCount(c);
       var act = c.full
         ? '<span class="full">Full</span>'
-        : '<a class="btn sm" href="' + esc(reserveHref) + '?circle=' + encodeURIComponent(c.id) + '"><span>Reserve Your Spot</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h14M12 6l6 6-6 6"/></svg></span></a>';
+        : '<a class="btn sm" href="' + esc(reserveHref) + '?circle=' + encodeURIComponent(c.id) + '"><span>Join a Circle</span><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h14M12 6l6 6-6 6"/></svg></span></a>';
       return '<div class="row" data-reveal style="--i:' + i + '">' +
         '<div class="day">' + esc(c.day) + '</div>' +
         '<div class="time">' + esc(c.time) + '</div>' +
