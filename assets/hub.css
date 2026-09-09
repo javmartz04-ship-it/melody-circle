@@ -139,7 +139,7 @@ html.fonts-in .melody .lyric{opacity:1; translate:0 0}
 .post-head{display:flex; align-items:center; gap:12px; padding:2px 4px 12px}
 .post-head .roundel{width:38px; height:38px; flex:none} .post-head .roundel svg{width:100%; height:100%; display:block}
 .post-head b{display:block; font-size:14px; color:var(--ink)} .post-head small{display:block; font-size:12px; color:var(--muted)}
-.post .ph{aspect-ratio:4/5}
+.post .ph{aspect-ratio:1/1}
 .post-cap{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 4px 0; font-size:13.5px; color:var(--body)}
 .post-cap .hearts{display:inline-flex; align-items:center; gap:6px; color:var(--clay-deep); font-weight:700}
 .post-cap .hearts svg{width:18px; height:16px}
@@ -164,6 +164,7 @@ html.fonts-in .melody .lyric{opacity:1; translate:0 0}
 .sheet .eyebrow{margin-bottom:14px}
 .sheet .h3{font-size:clamp(28px, 3vw, 36px); color:var(--sage-deep); margin-bottom:8px; line-height:1.1}
 .sheet .h3 em{font-style:italic; font-weight:400; color:var(--clay)}
+.sheet .h3:focus{outline:none}
 .sheet .sub{color:var(--body); font-size:15px; margin-bottom:22px}
 .ev-chip{display:grid; grid-template-columns:56px 1fr; gap:14px; align-items:center; padding:12px 14px; border-radius:16px; background:rgba(240,211,191,.28); margin-bottom:22px}
 .ev-chip .chip{width:56px; padding:6px 0 5px} .ev-chip .chip b{font-size:22px}
@@ -197,6 +198,11 @@ html.fonts-in .melody .lyric{opacity:1; translate:0 0}
 .sheet .btn{width:100%; justify-content:space-between; margin-top:6px}
 .sheet .risk{text-align:center; margin-top:12px}
 .step{display:none} .step.on{display:block}
+.sheet .btn.busy{pointer-events:none; opacity:.72}
+.sheet .btn.busy .ico svg{animation:mc-spin 1s linear infinite}
+@keyframes mc-spin{to{transform:rotate(360deg)}}
+.send-warn{margin:-8px 0 18px; padding:12px 14px; border-radius:14px; background:#FFF3EC; box-shadow:inset 0 0 0 1px rgba(167,99,69,.35); color:#7A3E2A; font-size:14px; line-height:1.5}
+.send-warn b{font-weight:700}
 .sum{display:grid; grid-template-columns:auto 1fr; gap:8px 18px; background:rgba(230,218,196,.35); border-radius:16px; padding:18px 20px; font-size:14.5px; color:var(--body); margin:0 0 20px}
 .sum b{color:var(--ink); font-weight:700; letter-spacing:.06em; font-size:11.5px; text-transform:uppercase; padding-top:2px}
 .phone-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border-radius:14px; background:rgba(240,211,191,.28); margin-bottom:12px}

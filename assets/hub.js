@@ -151,11 +151,15 @@
 
   if (!form) return;
 
-  /* Where a finished registration is POSTed (GoHighLevel inbound webhook, Zapier,
-     Formspree...). EMPTY = nothing is sent; the entry is still kept in localStorage
-     and the parent still gets the Zelle instructions and the text button. When set,
-     the body is flat JSON; read the response body, GHL returns 200 on rejections. */
-  var CONFIG = { webhook: "" };
+  /* Where a finished registration is POSTed: Josh's GoHighLevel inbound webhook
+     (2026-09-09). Flat JSON, application/json (the hook answers the CORS preflight
+     with 204 and allow-origin *). GHL returns HTTP 200 even when it rejects a body,
+     so the response text is parsed: accepted = "Success: request sent to trigger
+     execution server" with an execution id. Step 2 waits for the send; if it fails
+     the parent still gets the Zelle instructions plus a notice to text Tiffany so
+     the registration is not lost. EMPTY = nothing is sent (preview mode). The URL
+     is public by nature of a browser POST; filter the workflow on source. */
+  var CONFIG = { webhook: "https://services.leadconnectorhq.com/hooks/80ZqOXyEEamDK72vC2xD/webhook-trigger/9b2420db-2bff-4d98-b620-111269790aae", timeout: 12000 };
 
   var MAX = HUB.maxChildren || 4;
   var kids = form.querySelector("#kids"), tpl = doc.querySelector("#kid-tpl"), addBtn = form.querySelector("#add-kid"), addNote = form.querySelector("#add-kid-note");
@@ -215,12 +219,18 @@
   function kidsText(s) { var parts = s.children.map(function (c) { return c.name + " (" + c.age + ")"; }); return parts.length < 2 ? parts.join("") : parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1]; }
   function countWord(n) { return (["", "one", "two", "three", "four", "five"][n] || n) + (n === 1 ? " child" : " children"); }
   function send(s) {
-    if (!CONFIG.webhook) return;
+    if (!CONFIG.webhook) return Promise.resolve(true);
     var body = { first_name: s.first_name, last_name: s.last_name, full_name: s.parent, email: s.email, phone: s.phone_e164, phone_raw: s.phone, child_count: s.child_count, children: s.children.map(function (c) { return c.name + " (" + c.age + ")"; }).join(", "), total: s.total, event: s.event, event_id: s.eventId, event_when: s.when, place: s.place, notes: s.notes, source: s.source, submitted_at: s.submittedAt,
       summary: s.parent + " (" + s.email + ", " + s.phone + ") registered " + kidsText(s) + " for " + s.event + ", " + s.when + ". Total " + s.price + "." + (s.notes ? " Note: " + s.notes : "") };
-    fetch(CONFIG.webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
-      .then(function (r) { return r.text().then(function (t) { if (!r.ok || /error/i.test(t)) console.warn("webhook rejected", r.status, t); }); })
-      .catch(function (e) { console.warn("webhook failed", e); });
+    var ctl = ("AbortController" in window) ? new AbortController() : null, timer = ctl ? setTimeout(function () { ctl.abort(); }, CONFIG.timeout || 12000) : 0;
+    return fetch(CONFIG.webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { return r.text().then(function (t) {
+        clearTimeout(timer);
+        var ok = r.ok && !/error/i.test(t) && /success/i.test(t);
+        if (!ok) console.warn("webhook rejected", r.status, t);
+        return ok;
+      }); })
+      .catch(function (e) { clearTimeout(timer); console.warn("webhook failed", e); return false; });
   }
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -229,7 +239,16 @@
     if (bad) { var i = bad.querySelector("input, select"); if (i) i.focus(); return; }
     var s = summary();
     try { var all = JSON.parse(localStorage.getItem(STORE) || "[]"); all.push(s); localStorage.setItem(STORE, JSON.stringify(all)); } catch (x) {}
-    send(s);
+    var go = form.querySelector('button[type="submit"]'), goLabel = go.querySelector("span");
+    if (form.dataset.busy) return;
+    form.dataset.busy = "1"; go.setAttribute("aria-busy", "true"); go.classList.add("busy"); goLabel.textContent = "Saving your spot\u2026";
+    send(s).then(function (delivered) {
+      delete form.dataset.busy; go.removeAttribute("aria-busy"); go.classList.remove("busy"); goLabel.textContent = "Review registration";
+      showStep2(s, delivered);
+    });
+  });
+  function showStep2(s, delivered) {
+    var warn = step2.querySelector("#send-warn"); if (warn) warn.hidden = delivered;
     var sum = step2.querySelector(".sum");
     sum.innerHTML = "<b>Circle</b><span>" + esc(s.event) + ", " + esc(s.when) + "</span>" +
       "<b>" + (s.child_count === 1 ? "Little one" : "Little ones") + "</b><span>" + esc(kidsText(s)) + "</span>" +
@@ -239,14 +258,14 @@
     if (s.total > 0) pay.innerHTML = "To reserve your seat for yourself and " + (s.child_count === 1 ? "<b>" + esc(s.children[0].name) + "</b>" : "your <b>" + countWord(s.child_count) + "</b>") + ", send <b>" + esc(s.price) + "</b> via Zelle now to the number below. Your spot is held once the payment lands.";
     else pay.innerHTML = "This circle is complimentary. Your spot is held; just come sing with us.";
     step2.querySelector(".pay").hidden = s.total <= 0;
-    var body = "Hi " + (HUB.host || "") + ", I'd like to register " + kidsText(s) + " for the " + s.event + " on " + s.when + ". My name is " + s.parent + " and my email is " + s.email + ".";
+    var body = "Hi " + (HUB.host || "") + ", I'd like to register " + kidsText(s) + " for the " + s.event + " on " + s.when + ". My name is " + s.parent + ", my email is " + s.email + " and my number is " + s.phone + "." + (s.total > 0 ? " I'm sending " + s.price + " by Zelle." : "");
     var sms = step2.querySelector("[data-sms]"); if (sms) sms.setAttribute("href", "sms:" + (HUB.phone || "").replace(/\D/g, "") + "?&body=" + encodeURIComponent(body));
     step2.querySelectorAll("[data-phone]").forEach(function (el) { el.textContent = HUB.phone || ""; });
     step2.querySelectorAll("[data-zelle]").forEach(function (el) { el.textContent = HUB.zelle || HUB.host || ""; });
     step1.classList.remove("on"); step2.classList.add("on");
     sheet.querySelector(".sheet-in").scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
     var hd = step2.querySelector(".h3"); hd.setAttribute("tabindex", "-1"); hd.focus({ preventScroll: true });
-  });
+  }
   var copyBtn = sheet.querySelector("[data-copy]");
   if (copyBtn) copyBtn.addEventListener("click", function () {
     var num = HUB.phone || "";
