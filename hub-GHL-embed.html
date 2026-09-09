@@ -909,7 +909,7 @@ window.MELODY_HUB = {
     });
   }
   function openSheet(id) {
-    var ev = EVENTS.filter(function (e) { return e.id === id; })[0] || nextOpen;
+    var ev = EVENTS.filter(function (e) { return e.id === id; })[0] || nextOpenEv() || EVENTS.filter(isFull)[0] || null;
     if (!ev) { say("No circle is open for registration right now."); return; }
     if (!isOpen(ev)) { say(isFull(ev) ? "This circle is full. Text Tiffany to join the waitlist." : ev.status === "soon" ? "Registration for this circle opens soon." : "Registration for this circle has closed."); return; }
     current = ev; fillChip(ev);
