@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Build hub-GHL-embed.html: the Melody Circle hub as one self-contained block that
+"""Build hub-GHL-embed.html (default) or home-GHL-embed.html (`python3 make-ghl-embed.py home`):
+the Melody Circle hub or homepage as one self-contained block that
 survives being pasted inside GoHighLevel's own <body> (Custom Code element).
 Rules from system/LESSONS.md: no html/body/head, one wrapper id, ground carried twice,
 CSS scoped under the wrapper, runtime pass that clears GHL's ancestor wrappers."""
@@ -8,17 +9,26 @@ import re, sys, pathlib
 BUILD = pathlib.Path("/Users/javier/Design - Funnels - Website /builds/melody-circle-funnel")
 BASE = "https://javmartz04-ship-it.github.io/melody-circle/"
 ROOT = "#mc-root"
+PAGE = sys.argv[1] if len(sys.argv) > 1 else "hub"
+assert PAGE in ("hub", "home"), "page must be hub or home"
+HUB_URL = BASE + "hub.html"   # where the homepage's Join a Circle buttons go; change to the GHL hub page once it exists
 
-html = (BUILD / "hub.html").read_text()
-css = (BUILD / "assets/home.css").read_text() + "\n" + (BUILD / "assets/hub.css").read_text()
-js = "\n".join((BUILD / f"assets/{n}").read_text() for n in ("events.js", "melody.js", "hub.js"))
+if PAGE == "hub":
+    html = (BUILD / "hub.html").read_text()
+    css = (BUILD / "assets/home.css").read_text() + "\n" + (BUILD / "assets/hub.css").read_text()
+    js = "\n".join((BUILD / f"assets/{n}").read_text() for n in ("events.js", "melody.js", "hub.js"))
+else:
+    html = (BUILD / "index.html").read_text()
+    css = (BUILD / "assets/home.css").read_text()
+    js = "\n".join((BUILD / f"assets/{n}").read_text() for n in ("circles.js", "melody.js"))
 assert "</script" not in js.lower()
 
 # ---------- body markup ----------
 body = html.split("<body>", 1)[1].split("</body>", 1)[0]
 body = re.sub(r'<script src="assets/[^"]+"></script>\s*', "", body)
 body = body.replace('href="index.html"', f'href="{BASE}"')
-body = re.sub(r'(src|href)="assets/', rf'\1="{BASE}assets/', body)
+body = body.replace('href="hub.html"', f'href="{HUB_URL}"').replace('data-reserve="hub.html"', f'data-reserve="{HUB_URL}"')
+body = re.sub(r'(src|href|srcset)="assets/', rf'\1="{BASE}assets/', body)
 body = body.replace('href="', 'href="', 1)
 assert "assets/" not in re.sub(r'https://[^"\s]+', "", body), "unresolved relative asset"
 
@@ -130,7 +140,10 @@ armor_js = """
 
 fonts = '<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">'
 
-embed = f"""<!-- Melody Circle hub page, GoHighLevel embed. Paste the whole thing into one Custom Code element on an otherwise empty page. Built from builds/melody-circle-funnel (hub.html + assets). Images load from {BASE}. -->
+hub_note = "" if PAGE == "hub" else f"""\n<script>/* Where every Join a Circle button goes. Change this one line to the GHL hub page URL once that page is live. */\nvar MC_HUB_URL = "{HUB_URL}";\n(function(){{ var r=document.getElementById("mc-root"); if(!r) return; r.querySelectorAll('a[href*="hub.html"]').forEach(function(a){{ var q=a.getAttribute("href").split("?")[1]; a.setAttribute("href", MC_HUB_URL + (q ? "?" + q : "")); }}); var s=r.querySelector("#schedule-rows"); if(s) s.setAttribute("data-reserve", MC_HUB_URL); }})();\n</script>"""
+label = "hub page" if PAGE == "hub" else "homepage"
+source = "hub.html" if PAGE == "hub" else "index.html"
+embed = f"""<!-- Melody Circle {label}, GoHighLevel embed. Paste the whole thing into one Custom Code element on an otherwise empty page. Built from builds/melody-circle-funnel ({source} + assets). Images load from {BASE}. -->
 {fonts}
 <style>
 {reset}
@@ -139,13 +152,13 @@ embed = f"""<!-- Melody Circle hub page, GoHighLevel embed. Paste the whole thin
 </style>
 <div id="mc-root">
 <div class="mc-plate" aria-hidden="true"></div>
-{body.strip()}
+{body.strip()}{hub_note}
 <script>{armor_js}</script>
 <script>
 {js}
 </script>
 </div>
 """
-out = BUILD / "hub-GHL-embed.html"
+out = BUILD / ("hub-GHL-embed.html" if PAGE == "hub" else "home-GHL-embed.html")
 out.write_text(embed)
 print(out, len(embed.encode()) // 1024, "KB")
