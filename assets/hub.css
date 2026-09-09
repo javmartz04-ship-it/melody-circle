@@ -30,6 +30,7 @@
 .chip small{display:block; font-size:10.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px}
 .nextup .t{display:block; font-weight:700; color:var(--ink); font-size:16px}
 .nextup .d{display:block; font-size:13.5px; color:var(--body); margin-top:2px}
+.nextup .d b,.ev-chip .d b{color:var(--ink); font-weight:700}
 .nextup .go{width:36px; height:36px; border-radius:10px; display:grid; place-items:center; background:var(--peach-soft); color:var(--clay-deep); transition:transform .5s var(--ease)}
 .nextup .go svg{width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
 @media (hover:hover){ .nextup a:hover .go{transform:translateX(3px)} }
@@ -96,7 +97,8 @@ html.fonts-in .melody .lyric{opacity:1; translate:0 0}
 .card .note{margin:18px 0 22px; color:var(--body); font-size:15.5px}
 .card .act{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
 .card .act .btn{flex:1 1 auto; justify-content:space-between}
-.card .per{font-size:12.5px; letter-spacing:.06em; color:var(--muted)}
+.card .per{font-size:13px; letter-spacing:.04em; color:var(--ink); line-height:1.5}
+.card .per b{font-weight:700}
 @media (hover:hover){ .card.open:hover{transform:translateY(-4px); box-shadow:0 0 0 1px var(--hair), var(--shadow-lift)} }
 .d-circles-fl{right:-2%; top:-10px; width:70px; height:104px; rotate:14deg}
 .d-circles-note{left:-1%; top:60px; width:30px; height:42px; color:var(--sage); rotate:-12deg}
@@ -113,19 +115,17 @@ html.fonts-in .melody .lyric{opacity:1; translate:0 0}
 @media (hover:hover){ .cal-nav:hover{background:var(--peach); transform:scale(1.06)} }
 .cal-grid{display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:4px}
 .cal-wd{text-align:center; font-size:11.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); padding:8px 0 10px; border-bottom:1px solid var(--hair-strong); margin-bottom:6px}
-.cal-day{position:relative; aspect-ratio:1/1; max-height:96px; display:grid; place-items:center; border-radius:16px; font-size:16px; color:var(--ink); font-weight:500}
+.cal-day{position:relative; height:92px; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:16px; font-size:16px; color:var(--ink); font-weight:500; padding:0}
 .cal-day.out{color:#6E665A}
 .cal-day.today::after{content:""; position:absolute; left:50%; bottom:10px; width:5px; height:5px; border-radius:50%; background:var(--sage); transform:translateX(-50%)}
 .cal-day.ev{cursor:pointer; transition:transform .5s var(--ease-spring), box-shadow .5s var(--ease)}
-.cal-day.ev .dot{position:absolute; inset:6px; border-radius:50%; background:var(--peach-soft); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 10px 20px -12px rgba(167,99,69,.5)}
+.cal-day.ev .dot{width:58px; height:58px; border-radius:50%; display:grid; place-items:center; background:var(--peach-soft); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 10px 20px -12px rgba(167,99,69,.5); margin-top:-14px}
+.cal-day.ev .dot b{font-family:var(--display); font-weight:500; font-size:24px; line-height:1; color:var(--clay-deep); transform:translateY(1px)}
+.cal-day.ev .tag{position:absolute; bottom:4px; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--clay-deep)}
 .cal-day.ev.open .dot{background:var(--clay); box-shadow:inset 0 1px 0 rgba(255,255,255,.25), 0 12px 22px -12px rgba(167,99,69,.7)}
+.cal-day.ev.open .dot b{color:#FFFDF9}
 .cal-day.ev.closed .dot{background:var(--band)}
-.cal-day.ev .in{position:relative; text-align:center; line-height:1.1}
-.cal-day.ev .in b{display:block; font-family:var(--display); font-weight:500; font-size:24px; color:var(--clay-deep)}
-.cal-day.ev.open .in b{color:#FFFDF9}
-.cal-day.ev .in small{display:block; font-size:10px; font-weight:700; letter-spacing:.06em; color:var(--clay-deep); margin-top:2px}
-.cal-day.ev.open .in small{color:#FFFDF9}
-.cal-day.ev.closed .in b{color:var(--sage-deep)} .cal-day.ev.closed .in small{color:var(--ink)}
+.cal-day.ev.closed .dot b{color:var(--sage-deep)} .cal-day.ev.closed .tag{color:var(--ink)}
 @media (hover:hover){ .cal-day.ev:hover{transform:scale(1.06)} }
 .cal-note{display:flex; align-items:center; justify-content:center; gap:10px; margin-top:18px; font-size:13.5px; color:var(--body)}
 .cal-note i{width:10px; height:10px; border-radius:50%; background:var(--peach); flex:none}
@@ -178,19 +178,31 @@ html.fonts-in .melody .lyric{opacity:1; translate:0 0}
 .sheet .field.bad input,.sheet .field.bad select{border-color:#B4483A; background:#FFF8F6}
 .sheet .field .err{display:none; font-size:13px; color:#9A3A2E} .sheet .field.bad .err{display:block}
 .sheet .grid2{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px}
+.kid{position:relative}
+.kid + .kid{border-top:1px solid var(--hair); padding-top:14px; margin-top:4px}
+.kid-n{display:block; font-family:var(--display); font-style:italic; font-size:14px; color:var(--clay-deep); margin-bottom:8px}
+.kid-x{position:absolute; right:0; top:12px; font-size:11.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); min-height:32px; padding:0 8px; border-radius:8px}
+@media (hover:hover){ .kid-x:hover{color:var(--clay-deep); background:rgba(240,211,191,.4)} }
+.add-kid{width:100%; display:flex; align-items:center; gap:12px; min-height:52px; padding:8px 14px; margin:2px 0 18px; border-radius:var(--r-btn); border:1.5px dashed rgba(167,99,69,.45); background:rgba(240,211,191,.16); color:var(--clay-deep); font-weight:700; font-size:13px; letter-spacing:.08em; text-transform:uppercase; text-align:left; transition:background-color .35s var(--ease), border-color .35s var(--ease)}
+.add-kid .plus{width:28px; height:28px; border-radius:50%; background:var(--peach-soft); display:grid; place-items:center; font-size:18px; line-height:1; flex:none}
+.add-kid small{margin-left:auto; font-size:12px; font-weight:600; letter-spacing:.02em; text-transform:none; color:var(--muted); text-align:right}
+@media (hover:hover){ .add-kid:hover{background:rgba(240,211,191,.36); border-color:var(--clay)} }
+.pay{border:1.5px solid var(--clay); border-radius:18px; padding:20px 20px 16px; margin-bottom:18px; background:linear-gradient(180deg, rgba(240,211,191,.2), rgba(240,211,191,.05))}
+.pay .t{display:block; font-family:var(--display); font-weight:500; font-size:22px; color:var(--sage-deep); margin-bottom:8px; line-height:1.2}
+.pay .d{display:block; font-size:15px; color:var(--body); margin-bottom:14px}
+.pay .d b{color:var(--ink)}
+.pay .fine{font-size:13.5px; margin:12px 0 0}
+.sum strong{color:var(--clay-deep); font-weight:700; font-size:16px}
+.q{text-align:center; font-size:13.5px; color:var(--body); margin:0 0 8px}
 .sheet .btn{width:100%; justify-content:space-between; margin-top:6px}
 .sheet .risk{text-align:center; margin-top:12px}
 .step{display:none} .step.on{display:block}
 .sum{display:grid; grid-template-columns:auto 1fr; gap:8px 18px; background:rgba(230,218,196,.35); border-radius:16px; padding:18px 20px; font-size:14.5px; color:var(--body); margin:0 0 20px}
 .sum b{color:var(--ink); font-weight:700; letter-spacing:.06em; font-size:11.5px; text-transform:uppercase; padding-top:2px}
-.finish{border:1px solid var(--hair-strong); border-radius:18px; padding:18px 20px; margin-bottom:14px}
-.finish .t{display:block; font-weight:700; color:var(--ink); margin-bottom:6px}
-.finish .d{display:block; font-size:14.5px; color:var(--body); margin-bottom:14px}
 .phone-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border-radius:14px; background:rgba(240,211,191,.28); margin-bottom:12px}
 .phone-row b{font-family:var(--display); font-weight:500; font-size:22px; color:var(--sage-deep); letter-spacing:.02em}
 .copy{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--clay-deep); min-height:44px; display:inline-flex; align-items:center; padding:0 10px; border-radius:10px}
 @media (hover:hover){ .copy:hover{background:rgba(240,211,191,.5)} }
-.later{display:block; width:100%; text-align:center; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); min-height:44px; margin-top:6px}
 .tick{width:64px; height:64px; border-radius:50%; margin:0 0 18px; display:grid; place-items:center; background:linear-gradient(160deg, #EAAE8F, #D69A78); box-shadow:inset 0 2px 0 rgba(255,255,255,.4), 0 18px 30px -16px rgba(167,99,69,.5)}
 .tick svg{width:28px; height:28px; fill:none; stroke:#fff; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round}
 body.sheet-open{overflow:hidden}
@@ -218,8 +230,7 @@ body.sheet-open{overflow:hidden}
   .sheet-in{padding:26px 20px 28px}
   .sheet .grid2{grid-template-columns:minmax(0,1fr)}
   .cal .core{padding:18px 14px 18px}
-  .cal-day{border-radius:12px} .cal-day.ev .in b{font-size:18px} .cal-day.ev .in small{font-size:9px}
-  .cal-day.ev .dot{inset:3px}
+  .cal-day{border-radius:12px; height:64px} .cal-day.ev .dot{width:44px; height:44px; margin-top:-5px} .cal-day.ev .dot b{font-size:19px} .cal-day.ev .tag{font-size:8.5px; bottom:2px}
   .card-in{padding:26px 22px 24px}
   .d-insta-fl{display:none}
   .insta{padding:110px 0 100px}
@@ -234,7 +245,7 @@ body.sheet-open{overflow:hidden}
   .melody .lyric{font-size:56px}
   .cal-wd{font-size:10px; letter-spacing:.06em}
   .cal-day{font-size:14px}
-  .cal-day.ev .in small{display:none}
+  .cal-day.ev .tag{display:none}
   .circles{padding:88px 0 24px}
   .calendar{padding-bottom:88px}
   .insta{padding:96px 0 90px; margin-bottom:56px}

@@ -148,7 +148,7 @@
   <div class="hill" aria-hidden="true"><svg viewBox="0 0 1440 320" preserveAspectRatio="none"><use href="#mc-hill"/></svg></div>
   <div class="col hub-grid">
     <div class="hub-copy">
-      <p class="eyebrow fade-in" style="--i:0">Mommy + Me · Music + Movement · Miami</p>
+      <p class="eyebrow fade-in" style="--i:0">Mommy and Me · Music and Movement · Miami</p>
       <h1 class="hub-h1 display" id="hub-h">
         <svg class="deco d-hub-sprig draw" viewBox="0 0 100 150" aria-hidden="true">
 <path class="sp-stem" d="M50 148 C 44 100, 56 60, 52 8" fill="none" stroke="#939377" stroke-width="2.2" stroke-linecap="round"/>
@@ -274,7 +274,7 @@
         <div><span class="brand">Melody Circle</span><p class="tagline"><span>music</span><i></i><span>connection</span><i></i><span>community</span></p></div>
       </div>
       <p>Mommy + Me Music + Movement · Miami</p>
-      <p>© 2026 Melody Circle</p>
+      <p>Melody Circle © 2026. All rights reserved.</p>
     </footer>
   </div>
 </section>
@@ -292,29 +292,38 @@
       <p class="sub">Tell us who's coming. It takes about a minute.</p>
       <div class="ev-chip" data-ev-chip></div>
       <form novalidate autocomplete="on">
-        <div class="field" data-field="parent"><label for="r-parent">Your name</label><input id="r-parent" name="parent_name" type="text" autocomplete="name" placeholder="First and last name" required><span class="err" role="alert"></span></div>
-        <div class="field" data-field="email"><label for="r-email">Email</label><input id="r-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required><span class="err" role="alert"></span></div>
-        <div class="grid2">
-          <div class="field" data-field="child"><label for="r-child">Your little one's name</label><input id="r-child" name="child_name" type="text" autocomplete="off" placeholder="Their first name" required><span class="err" role="alert"></span></div>
-          <div class="field" data-field="age"><label for="r-age">Their age</label><select id="r-age" name="age" required><option value="">Choose</option><option>Newborn to 6 months</option><option>6 to 12 months</option><option>1 to 2 years</option><option>2 to 3 years</option><option>3 to 4 years</option></select><span class="err" role="alert"></span></div>
-        </div>
+        <div class="field" data-field="parent"><label for="r-parent">Parent or guardian full name</label><input id="r-parent" name="parent_name" type="text" autocomplete="name" placeholder="First and last name" required><span class="err" role="alert"></span></div>
+        <div class="field" data-field="email"><label for="r-email">Parent or guardian email</label><input id="r-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required><span class="err" role="alert"></span></div>
+        <div class="field" data-field="phone"><label for="r-phone">Parent or guardian phone number</label><input id="r-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(305) 555-0142" required><span class="err" role="alert"></span></div>
+        <div class="kids" id="kids"></div>
+        <button class="add-kid" type="button" id="add-kid"><span class="plus" aria-hidden="true">+</span><span>Add a sibling</span><small id="add-kid-note">$15 per sibling · up to 4 children</small></button>
         <div class="field" data-field="notes"><label for="r-notes">Anything we should know? <span style="text-transform:none; letter-spacing:0; font-weight:600">(optional)</span></label><textarea id="r-notes" name="notes" placeholder="Allergies, accommodations or a note for Tiffany"></textarea></div>
         <button class="btn lg" type="submit"><span>Review registration</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></button>
-        <p class="risk">No payment on this page. You'll finish by text.</p>
+        <p class="risk">Next: your total and how to pay by Zelle.</p>
       </form>
+      <template id="kid-tpl">
+        <div class="kid" data-kid>
+          <div class="grid2">
+            <div class="field" data-field="kidname"><label>Your little one's first name</label><input type="text" autocomplete="off" placeholder="Their first name" required><span class="err" role="alert"></span></div>
+            <div class="field" data-field="kidage"><label>Their age</label><select required><option value="">Choose</option><option>Newborn to 6 months</option><option>6 to 12 months</option><option>1 to 2 years</option><option>2 to 3 years</option><option>3 to 4 years</option></select><span class="err" role="alert"></span></div>
+          </div>
+          <button class="kid-x" type="button" aria-label="Remove this child" data-remove-kid>Remove</button>
+        </div>
+      </template>
     </div>
     <div class="step" id="step-2">
       <div class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h2 class="h3 display">Almost in <em>the circle!</em></h2>
-      <p class="sub">Here's what you told us. Send it over and your spot is held.</p>
+      <p class="sub">Here's what you told us.</p>
       <div class="sum"></div>
-      <div class="finish">
-        <span class="t">Finish by text</span>
-        <span class="d">Text your registration details to <span data-host>Tiffany</span> and she'll confirm your spot and send payment details.</span>
+      <div class="pay">
+        <span class="t">Send your Zelle payment to lock in your spot</span>
+        <p class="d" id="pay-copy"></p>
         <div class="phone-row"><b data-phone>786-619-6060</b><button class="copy" type="button" data-copy>Tap to copy</button></div>
-        <a class="btn lg" href="sms:" data-sms><span>Text registration details</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></a>
+        <p class="d fine">It will show as enrolled under <b data-zelle>Tiffany Dominguez</b>. Make sure the name matches and the number is typed correctly. <b>All sales are final.</b></p>
       </div>
-      <button class="later" type="button" data-close>Finish later</button>
+      <p class="q">Questions? Tiffany reads every text.</p>
+      <a class="btn lg ghost" href="sms:" data-sms><span>Text Tiffany now</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></a>
     </div>
   </div>
 </aside>

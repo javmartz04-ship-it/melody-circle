@@ -30,7 +30,7 @@
       var d = parse(ev.date);
       var chip = '<span class="chip"><b>' + d.getDate() + '</b><small>' + mon3(d) + '</small></span>';
       if (isOpen(ev)) {
-        return '<a href="#circles" data-register="' + esc(ev.id) + '">' + chip + '<span><span class="t">Register for the next circle</span><span class="d">' + DAYS[d.getDay()] + ' at ' + esc(ev.start) + (ev.price > 0 ? ' · $' + ev.price + ' per child' : ' · Complimentary') + '</span></span><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h14M12 6l6 6-6 6"/></svg></span></a>';
+        return '<a href="#circles" data-register="' + esc(ev.id) + '">' + chip + '<span><span class="t">Register for the next circle</span><span class="d">' + DAYS[d.getDay()] + ' at ' + esc(ev.start) + (ev.price > 0 ? ' · <b>$' + ev.price + ' per child' + (ev.sibling ? ' · $' + ev.sibling + ' per sibling' : '') + '</b>' : ' · Complimentary') + '</span></span><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h14M12 6l6 6-6 6"/></svg></span></a>';
       }
       return '<div class="nu">' + chip + '<span><span class="t">' + esc(ev.title) + '</span><span class="d">' + DAYS[d.getDay()] + ' at ' + esc(ev.start) + '</span></span><span class="closed">' + (ev.status === "soon" ? "Soon" : "Closed") + '</span></div>';
     }).join("");
@@ -55,7 +55,7 @@
     cards.innerHTML = featured.slice(0, 2).map(function (ev, i) {
       var d = parse(ev.date), open = isOpen(ev);
       var act = open
-        ? '<button class="btn lg" type="button" data-register="' + esc(ev.id) + '"><span>Join a Circle</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></button><span class="per">' + (ev.price > 0 ? "$" + ev.price + " per child" : "Complimentary") + '</span>'
+        ? '<button class="btn lg" type="button" data-register="' + esc(ev.id) + '"><span>Join a Circle</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></button><span class="per">' + (ev.price > 0 ? "<b>$" + ev.price + " per child</b>" + (ev.sibling ? "<br><b>$" + ev.sibling + " per sibling</b>" : "") : "Complimentary") + '</span>'
         : '<span class="pill">' + (ev.status === "soon" ? "Registration opens soon" : "Registration closed") + '</span>';
       return '<article class="card ' + (open ? "open" : "closed") + '" data-reveal style="--i:' + i + '"><div class="card-in">' +
         '<p class="lab">' + esc(ev.label) + '</p>' +
@@ -89,7 +89,7 @@
       var cls = "cal-day" + (out ? " out" : "") + (isToday ? " today" : "");
       if (ev) {
         cls += " ev " + (isOpen(ev) ? "open" : "closed");
-        html += '<button type="button" class="' + cls + '" data-day="' + esc(ev.id) + '" aria-label="' + esc(ev.title) + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + '"><span class="dot" aria-hidden="true"></span><span class="in"><b>' + d.getDate() + '</b><small>' + esc(ev.short || "") + '</small></span></button>';
+        html += '<button type="button" class="' + cls + '" data-day="' + esc(ev.id) + '" aria-label="' + esc(ev.title) + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + '"><span class="dot"><b>' + d.getDate() + '</b></span><small class="tag">' + esc(ev.short || "") + '</small></button>';
       } else {
         html += '<div class="' + cls + '"><span>' + d.getDate() + '</span></div>';
       }
@@ -120,7 +120,7 @@
   function fillChip(ev) {
     var d = parse(ev.date);
     sheet.querySelectorAll("[data-ev-chip]").forEach(function (el) {
-      el.innerHTML = '<span class="chip"><b>' + d.getDate() + '</b><small>' + mon3(d) + '</small></span><span><span class="t">' + esc(ev.title) + '</span><span class="d">' + DAYS[d.getDay()] + ', ' + esc(ev.start) + ' to ' + esc(ev.end) + ' · ' + price(ev) + (ev.price > 0 ? ' per child' : '') + '</span></span>';
+      el.innerHTML = '<span class="chip"><b>' + d.getDate() + '</b><small>' + mon3(d) + '</small></span><span><span class="t">' + esc(ev.title) + '</span><span class="d">' + DAYS[d.getDay()] + ', ' + esc(ev.start) + ' to ' + esc(ev.end) + ' · <b>' + price(ev) + (ev.price > 0 ? ' per child' + (ev.sibling ? ' · $' + ev.sibling + ' per sibling' : '') : '') + '</b></span></span>';
     });
   }
   function openSheet(id) {
@@ -128,6 +128,7 @@
     if (!ev) { say("No circle is open for registration right now."); return; }
     if (!isOpen(ev)) { say(ev.status === "soon" ? "Registration for this circle opens soon." : "Registration for this circle has closed."); return; }
     current = ev; fillChip(ev);
+    if (typeof refreshKids === "function") refreshKids();
     step1.classList.add("on"); step2.classList.remove("on");
     lastFocus = doc.activeElement;
     veil.classList.add("is-open"); sheet.classList.add("is-open"); sheet.setAttribute("aria-hidden", "false"); doc.body.classList.add("sheet-open");
@@ -149,38 +150,102 @@
   if (want && EVENTS.some(function (e) { return e.id === want && isOpen(e); })) setTimeout(function () { openSheet(want); }, 600);
 
   if (!form) return;
-  var fields = [].slice.call(form.querySelectorAll("[data-field]"));
-  var MSG = { parent: "Please tell us your name.", email: "That email does not look right yet.", child: "What should we call your little one?", age: "Pick your little one's age." };
+
+  /* Where a finished registration is POSTed (GoHighLevel inbound webhook, Zapier,
+     Formspree...). EMPTY = nothing is sent; the entry is still kept in localStorage
+     and the parent still gets the Zelle instructions and the text button. When set,
+     the body is flat JSON; read the response body, GHL returns 200 on rejections. */
+  var CONFIG = { webhook: "" };
+
+  var MAX = HUB.maxChildren || 4;
+  var kids = form.querySelector("#kids"), tpl = doc.querySelector("#kid-tpl"), addBtn = form.querySelector("#add-kid"), addNote = form.querySelector("#add-kid-note");
+  var MSG = { parent: "Please tell us your full name.", email: "That email does not look right yet.", phone: "A US number needs 10 digits.", kidname: "What should we call your little one?", kidage: "Pick their age." };
   function val(f) { var i = f.querySelector("input, select, textarea"); return i ? i.value.trim() : ""; }
   function check(f) {
     var k = f.getAttribute("data-field"), v = val(f);
     if (k === "notes") return "";
     if (!v) return "required";
     if (k === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return "email";
+    if (k === "phone") { var d = v.replace(/\D/g, ""); if (d.length !== 10 && !(d.length === 11 && d[0] === "1")) return "phone"; }
     return "";
   }
-  fields.forEach(function (f) { f.querySelectorAll("input, select, textarea").forEach(function (i) { i.addEventListener("input", function () { if (!check(f)) f.classList.remove("bad"); }); i.addEventListener("change", function () { if (!check(f)) f.classList.remove("bad"); }); }); });
+  function wire(f) { f.querySelectorAll("input, select, textarea").forEach(function (i) { var clear = function () { if (!check(f)) f.classList.remove("bad"); }; i.addEventListener("input", clear); i.addEventListener("change", clear); }); }
+  function kidRows() { return [].slice.call(kids.querySelectorAll("[data-kid]")); }
+  function refreshKids() {
+    var rows = kidRows(), n = rows.length;
+    rows.forEach(function (r, i) { var old = r.querySelector(".kid-n"); if (old) old.remove(); if (i > 0) { var tag = doc.createElement("span"); tag.className = "kid-n"; tag.textContent = "Sibling " + i; r.insertBefore(tag, r.firstChild); } });
+    var ev = current || nextOpen || {};
+    addBtn.hidden = n >= MAX;
+    if (addNote) addNote.textContent = (ev.sibling ? "$" + ev.sibling + " per sibling · " : "") + "up to " + MAX + " children";
+  }
+  function addKid() {
+    if (kidRows().length >= MAX) return;
+    var node = tpl.content.firstElementChild.cloneNode(true);
+    var n = kidRows().length + 1, id = "k" + Date.now() + n;
+    var lab = node.querySelectorAll("label"), inp = node.querySelector("input"), sel = node.querySelector("select");
+    if (n > 1) lab[0].textContent = "Sibling's first name";
+    lab[0].setAttribute("for", id + "n"); inp.id = id + "n"; lab[1].setAttribute("for", id + "a"); sel.id = id + "a";
+    if (n === 1) node.querySelector("[data-remove-kid]").remove();
+    kids.appendChild(node); node.querySelectorAll("[data-field]").forEach(wire); refreshKids();
+    if (n > 1 && inp) inp.focus({ preventScroll: true });
+  }
+  kids.addEventListener("click", function (e) { var x = e.target.closest("[data-remove-kid]"); if (x) { x.closest("[data-kid]").remove(); refreshKids(); } });
+  addBtn.addEventListener("click", addKid);
+  addKid();
+  [].slice.call(form.querySelectorAll("[data-field]")).filter(function (f) { return !f.closest("[data-kid]"); }).forEach(wire);
+
+  var phone = form.querySelector("#r-phone");
+  if (phone) phone.addEventListener("input", function () {
+    var d = phone.value.replace(/\D/g, "").slice(0, 10), out = d;
+    if (d.length > 6) out = "(" + d.slice(0, 3) + ") " + d.slice(3, 6) + "-" + d.slice(6); else if (d.length > 3) out = "(" + d.slice(0, 3) + ") " + d.slice(3); else if (d.length > 0) out = "(" + d;
+    phone.value = out;
+  });
+
+  function total(ev, n) { return ev.price > 0 ? ev.price + (ev.sibling || 0) * Math.max(0, n - 1) : 0; }
+  function money(v) { return "$" + v; }
   function summary() {
     var g = function (k) { var f = form.querySelector('[data-field="' + k + '"]'); return f ? val(f) : ""; };
     var d = parse(current.date);
-    return { parent: g("parent"), email: g("email"), child: g("child"), age: g("age"), notes: g("notes"), eventId: current.id, event: current.title, when: DAYS[d.getDay()] + ", " + MONTHS[d.getMonth()] + " " + d.getDate() + " at " + current.start, place: current.place, price: price(current), submittedAt: new Date().toISOString(), source: "melody-circle-hub" };
+    var children = kidRows().map(function (r) { return { name: val(r.querySelector('[data-field="kidname"]')), age: val(r.querySelector('[data-field="kidage"]')) }; });
+    var name = g("parent"), parts = name.split(/\s+/), digits = g("phone").replace(/\D/g, ""); if (digits.length === 10) digits = "1" + digits;
+    var n = children.length, t = total(current, n);
+    return { parent: name, first_name: parts[0] || "", last_name: parts.slice(1).join(" "), email: g("email"), phone: g("phone"), phone_e164: digits ? "+" + digits : "", children: children, child_count: n, total: t, notes: g("notes"),
+      eventId: current.id, event: current.title, when: DAYS[d.getDay()] + ", " + MONTHS[d.getMonth()] + " " + d.getDate() + " at " + current.start, place: current.place, price: money(t), submittedAt: new Date().toISOString(), source: "melody-circle-hub" };
+  }
+  function kidsText(s) { var parts = s.children.map(function (c) { return c.name + " (" + c.age + ")"; }); return parts.length < 2 ? parts.join("") : parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1]; }
+  function countWord(n) { return (["", "one", "two", "three", "four", "five"][n] || n) + (n === 1 ? " child" : " children"); }
+  function send(s) {
+    if (!CONFIG.webhook) return;
+    var body = { first_name: s.first_name, last_name: s.last_name, full_name: s.parent, email: s.email, phone: s.phone_e164, phone_raw: s.phone, child_count: s.child_count, children: s.children.map(function (c) { return c.name + " (" + c.age + ")"; }).join(", "), total: s.total, event: s.event, event_id: s.eventId, event_when: s.when, place: s.place, notes: s.notes, source: s.source, submitted_at: s.submittedAt,
+      summary: s.parent + " (" + s.email + ", " + s.phone + ") registered " + kidsText(s) + " for " + s.event + ", " + s.when + ". Total " + s.price + "." + (s.notes ? " Note: " + s.notes : "") };
+    fetch(CONFIG.webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+      .then(function (r) { return r.text().then(function (t) { if (!r.ok || /error/i.test(t)) console.warn("webhook rejected", r.status, t); }); })
+      .catch(function (e) { console.warn("webhook failed", e); });
   }
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var bad = null;
-    fields.forEach(function (f) { var c = check(f); if (c) { var err = f.querySelector(".err"); if (err) err.textContent = MSG[f.getAttribute("data-field")] || "Please complete this field."; f.classList.add("bad"); if (!bad) bad = f; } else f.classList.remove("bad"); });
+    [].slice.call(form.querySelectorAll("[data-field]")).forEach(function (f) { var c = check(f); if (c) { var err = f.querySelector(".err"); if (err) err.textContent = MSG[f.getAttribute("data-field")] || "Please complete this field."; f.classList.add("bad"); if (!bad) bad = f; } else f.classList.remove("bad"); });
     if (bad) { var i = bad.querySelector("input, select"); if (i) i.focus(); return; }
     var s = summary();
     try { var all = JSON.parse(localStorage.getItem(STORE) || "[]"); all.push(s); localStorage.setItem(STORE, JSON.stringify(all)); } catch (x) {}
+    send(s);
     var sum = step2.querySelector(".sum");
-    sum.innerHTML = "<b>Circle</b><span>" + esc(s.event) + ", " + esc(s.when) + "</span><b>Little one</b><span>" + esc(s.child) + ", " + esc(s.age) + "</span><b>Grown-up</b><span>" + esc(s.parent) + "</span><b>Email</b><span>" + esc(s.email) + "</span><b>Price</b><span>" + esc(s.price) + (current.price > 0 ? " per child" : "") + "</span>";
-    var body = "Hi " + (HUB.host || "") + ", I'd like to register " + s.child + " (" + s.age + ") for the " + s.event + " on " + s.when + ". Grown-up: " + s.parent + ", " + s.email + "." + (s.notes ? " Note: " + s.notes : "");
+    sum.innerHTML = "<b>Circle</b><span>" + esc(s.event) + ", " + esc(s.when) + "</span>" +
+      "<b>" + (s.child_count === 1 ? "Little one" : "Little ones") + "</b><span>" + esc(kidsText(s)) + "</span>" +
+      "<b>Grown-up</b><span>" + esc(s.parent) + "</span><b>Email</b><span>" + esc(s.email) + "</span><b>Phone</b><span>" + esc(s.phone) + "</span>" +
+      "<b>Price</b><span><strong>" + esc(s.price) + "</strong> for " + countWord(s.child_count) + (current.sibling && s.child_count > 1 ? " (" + money(current.price) + " + " + (s.child_count - 1) + " × " + money(current.sibling) + ")" : "") + "</span>";
+    var pay = step2.querySelector("#pay-copy");
+    if (s.total > 0) pay.innerHTML = "To reserve your seat for yourself and " + (s.child_count === 1 ? "<b>" + esc(s.children[0].name) + "</b>" : "your <b>" + countWord(s.child_count) + "</b>") + ", send <b>" + esc(s.price) + "</b> via Zelle now to the number below. Your spot is held once the payment lands.";
+    else pay.innerHTML = "This circle is complimentary. Your spot is held; just come sing with us.";
+    step2.querySelector(".pay").hidden = s.total <= 0;
+    var body = "Hi " + (HUB.host || "") + ", I'd like to register " + kidsText(s) + " for the " + s.event + " on " + s.when + ". My name is " + s.parent + " and my email is " + s.email + ".";
     var sms = step2.querySelector("[data-sms]"); if (sms) sms.setAttribute("href", "sms:" + (HUB.phone || "").replace(/\D/g, "") + "?&body=" + encodeURIComponent(body));
     step2.querySelectorAll("[data-phone]").forEach(function (el) { el.textContent = HUB.phone || ""; });
-    step2.querySelectorAll("[data-host]").forEach(function (el) { el.textContent = HUB.host || "us"; });
+    step2.querySelectorAll("[data-zelle]").forEach(function (el) { el.textContent = HUB.zelle || HUB.host || ""; });
     step1.classList.remove("on"); step2.classList.add("on");
     sheet.querySelector(".sheet-in").scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
-    var h = step2.querySelector(".h3"); h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true });
+    var hd = step2.querySelector(".h3"); hd.setAttribute("tabindex", "-1"); hd.focus({ preventScroll: true });
   });
   var copyBtn = sheet.querySelector("[data-copy]");
   if (copyBtn) copyBtn.addEventListener("click", function () {

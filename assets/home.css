@@ -104,7 +104,7 @@ section{scroll-margin-top:96px; position:relative}
 /* ---------- reveal ---------- */
 [data-reveal]{opacity:0; transform:translateY(26px); filter:blur(8px); transition:opacity .9s var(--ease-out), transform .9s var(--ease-out), filter .9s var(--ease-out); transition-delay:calc(var(--i,0) * 90ms)}
 [data-reveal].is-in{opacity:1; transform:none; filter:blur(0)}
-.line{display:block; overflow:hidden; padding-bottom:.06em; margin-bottom:-.06em}
+.line{display:block; overflow:hidden; padding-bottom:.24em; margin-bottom:-.24em}
 .line > span{display:block; transform:translateY(112%); transition:transform 1.1s var(--ease-out); transition-delay:calc(var(--i,0) * 120ms + 120ms)}
 html.fonts-in .line > span{transform:none}
 .fade-in{opacity:0; transform:translateY(14px); filter:blur(6px); transition:opacity .9s var(--ease-out), transform .9s var(--ease-out), filter .9s var(--ease-out); transition-delay:calc(var(--i,0) * 110ms + 120ms)}
