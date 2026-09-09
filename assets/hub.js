@@ -135,6 +135,7 @@
     setTimeout(function () { var f = sheet.querySelector("input"); if (f) f.focus({ preventScroll: true }); }, reduce ? 0 : 420);
   }
   function closeSheet() {
+    if (doc.activeElement && sheet.contains(doc.activeElement)) doc.activeElement.blur();
     veil.classList.remove("is-open"); sheet.classList.remove("is-open"); sheet.setAttribute("aria-hidden", "true"); doc.body.classList.remove("sheet-open");
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
