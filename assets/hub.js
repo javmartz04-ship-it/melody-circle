@@ -179,8 +179,11 @@
     var rows = kidRows(), n = rows.length;
     rows.forEach(function (r, i) { var old = r.querySelector(".kid-n"); if (old) old.remove(); if (i > 0) { var tag = doc.createElement("span"); tag.className = "kid-n"; tag.textContent = "Sibling " + i; r.insertBefore(tag, r.firstChild); } });
     var ev = current || nextOpen || {};
-    addBtn.hidden = n >= MAX;
-    if (addNote) addNote.textContent = (ev.sibling ? "$" + ev.sibling + " per sibling · " : "") + "up to " + MAX + " children";
+    var full = n >= MAX;
+    addBtn.disabled = full; addBtn.setAttribute("aria-disabled", full ? "true" : "false");
+    addBtn.querySelector(".plus").textContent = full ? "\u2713" : "+";
+    addBtn.querySelector(".plus + span").textContent = full ? "Maximum reached" : "Add a sibling";
+    if (addNote) addNote.textContent = full ? MAX + " children per registration" : (ev.sibling ? "$" + ev.sibling + " per sibling · " : "") + "up to " + MAX + " children";
   }
   function addKid() {
     if (kidRows().length >= MAX) return;
