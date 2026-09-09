@@ -11,7 +11,7 @@ BASE = "https://javmartz04-ship-it.github.io/melody-circle/"
 ROOT = "#mc-root"
 PAGE = sys.argv[1] if len(sys.argv) > 1 else "hub"
 assert PAGE in ("hub", "home"), "page must be hub or home"
-HUB_URL = BASE + "hub.html"   # where the homepage's Join a Circle buttons go; change to the GHL hub page once it exists
+HUB_URL = "https://hub.melodycirclemiami.com/hub-page"   # the live GHL hub page; every Join a Circle on the homepage goes here
 
 if PAGE == "hub":
     html = (BUILD / "hub.html").read_text()
@@ -140,7 +140,7 @@ armor_js = """
 
 fonts = '<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">'
 
-hub_note = "" if PAGE == "hub" else f"""\n<script>/* Where every Join a Circle button goes. Change this one line to the GHL hub page URL once that page is live. */\nvar MC_HUB_URL = "{HUB_URL}";\n(function(){{ var r=document.getElementById("mc-root"); if(!r) return; r.querySelectorAll('a[href*="hub.html"]').forEach(function(a){{ var q=a.getAttribute("href").split("?")[1]; a.setAttribute("href", MC_HUB_URL + (q ? "?" + q : "")); }}); var s=r.querySelector("#schedule-rows"); if(s) s.setAttribute("data-reserve", MC_HUB_URL); }})();\n</script>"""
+hub_note = "" if PAGE == "hub" else f"""\n<script>/* Where every Join a Circle button goes. Change this one line to the GHL hub page URL once that page is live. */\nvar MC_HUB_URL = "{HUB_URL}";\n(function(){{ var r=document.getElementById("mc-root"); if(!r) return; r.querySelectorAll('a[href*="hub.html"], a[href*="hub.melodycirclemiami.com"]').forEach(function(a){{ var q=a.getAttribute("href").split("?")[1]; a.setAttribute("href", MC_HUB_URL + (q ? "?" + q : "")); }}); var s=r.querySelector("#schedule-rows"); if(s) s.setAttribute("data-reserve", MC_HUB_URL); }})();\n</script>"""
 label = "hub page" if PAGE == "hub" else "homepage"
 source = "hub.html" if PAGE == "hub" else "index.html"
 embed = f"""<!-- Melody Circle {label}, GoHighLevel embed. Paste the whole thing into one Custom Code element on an otherwise empty page. Built from builds/melody-circle-funnel ({source} + assets). Images load from {BASE}. -->
