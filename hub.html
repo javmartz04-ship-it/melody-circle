@@ -108,15 +108,8 @@
 <symbol id="mc-hill" viewBox="0 0 1440 320" preserveAspectRatio="none">
   <path d="M0 320 L0 150 C 180 70, 400 250, 690 190 C 900 146, 1060 40, 1440 140 L1440 320 Z" fill="currentColor"/>
 </symbol>
-<symbol id="mc-roundel" viewBox="0 0 200 200">
-  <circle cx="100" cy="100" r="96" fill="#FFFDF9" stroke="#C6935A" stroke-width="1.6"/>
-  <circle cx="100" cy="100" r="89" fill="none" stroke="#C6935A" stroke-width=".7" opacity=".55"/>
-  <use href="#mc-sprig" x="80" y="20" width="40" height="56"/>
-  <text x="100" y="106" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-weight="500" font-size="31" letter-spacing="2.5" fill="#3A3A2A">MELODY</text>
-  <text x="100" y="128" text-anchor="middle" font-family="'Nunito', Arial, sans-serif" font-weight="700" font-size="12.5" letter-spacing="6.5" fill="#5E6249">CIRCLE</text>
-  <text x="100" y="147" text-anchor="middle" font-family="'Nunito', Arial, sans-serif" font-weight="600" font-size="8.2" letter-spacing="1.1" fill="#6B6357">songs <tspan fill="#D7A685">•</tspan> connection <tspan fill="#D7A685">•</tspan> growth</text>
-  <use href="#mc-heart" x="93" y="158" width="14" height="13" color="#D7A685"/>
-</symbol>
+<symbol id="mc-roundel" viewBox="0 0 200 200"><image href="assets/logo-roundel.png" x="0" y="0" width="200" height="200"/></symbol>
+<symbol id="mc-mark" viewBox="0 0 489 800"><image href="assets/logo-mark.png" x="0" y="0" width="489" height="800"/></symbol>
 <symbol id="ic-arrow" viewBox="0 0 24 24"><path d="M4 12h14M12 6l6 6-6 6"/></symbol>
 <symbol id="ic-note" viewBox="0 0 48 48"><ellipse cx="17" cy="35" rx="8" ry="5.5" transform="rotate(-15 17 35)"/><path d="M24.5 33.5V9c6 2 10 6.5 9 14"/></symbol>
 <symbol id="ic-scarf" viewBox="0 0 48 48"><path d="M6 21c6-12 13-12 19 0s13 12 19 0"/><path d="M6 31c6-12 13-12 19 0s13 12 19 0" opacity=".5"/></symbol>
@@ -182,11 +175,16 @@
       <div class="garland" aria-hidden="true"><svg viewBox="0 0 640 150"><use href="#mc-garland"/></svg></div>
       <div class="stage-in">
         <div class="rings" aria-hidden="true"><svg><circle cx="50%" cy="52%" r="22%"/><circle cx="50%" cy="52%" r="34%"/><circle cx="50%" cy="52%" r="46%"/><circle cx="50%" cy="52%" r="58%"/></svg></div>
-        <span class="deco d-stage-note float" style="--dur:8s" aria-hidden="true"><svg><use href="#mc-note"/></svg></span>
-        <span class="deco d-stage-fl float soft" style="--r:10deg; --dur:9s; --del:-3s" aria-hidden="true"><svg><use href="#mc-flowers"/></svg></span>
-        <div>
-          <div class="roundel" aria-hidden="true"><svg><use href="#mc-roundel"/></svg></div>
-          <p class="stage-words">Sing<em>Connect</em>Belong</p>
+        <div class="stage-body">
+          <svg class="melody" viewBox="0 0 640 420" aria-hidden="true">
+          <defs><radialGradient id="glow" cx="50%" cy="30%" r="55%"><stop offset="0" stop-color="#FFFDF9" stop-opacity=".22"/><stop offset="1" stop-color="#FFFDF9" stop-opacity="0"/></radialGradient></defs>
+          <rect x="0" y="0" width="640" height="420" fill="url(#glow)"/>
+          <image class="rd" href="assets/logo-roundel.png" x="212" y="6" width="216" height="216"/>
+          <path class="staff" d="M34 318 C 150 286, 214 372, 320 314 C 426 256, 470 296, 606 214"/>
+          <g class="note n1" transform="translate(121 313)"><ellipse rx="10" ry="7" transform="rotate(-22)"/><path d="M9 -3 V-40" /><path class="flag" d="M9 -40 C 22 -34, 26 -24, 22 -12 C 21 -20, 16 -26, 9 -30 Z"/></g><g class="note n2" transform="translate(332 307)"><ellipse rx="10" ry="7" transform="rotate(-22)"/><path d="M9 -3 V-40" /><path class="flag" d="M9 -40 C 22 -34, 26 -24, 22 -12 C 21 -20, 16 -26, 9 -30 Z"/></g><g class="note n3" transform="translate(534 250)"><ellipse rx="10" ry="7" transform="rotate(-22)"/><path d="M9 -3 V-40" /><path class="flag" d="M9 -40 C 22 -34, 26 -24, 22 -12 C 21 -20, 16 -26, 9 -30 Z"/></g>
+          <text class="lyric w1" x="121" y="365" text-anchor="middle">Sing</text><text class="lyric w2 em" x="332" y="359" text-anchor="middle">Connect</text><text class="lyric w3" x="534" y="302" text-anchor="middle">Belong</text>
+        </svg>
+          <p class="sr-only">Sing, connect, belong.</p>
           <p class="stage-cap" id="stage-cap">Circles this month</p>
         </div>
       </div>
@@ -273,7 +271,7 @@
     <footer class="foot">
       <div class="foot-brand">
         <div class="roundel" aria-hidden="true"><svg><use href="#mc-roundel"/></svg></div>
-        <div><span class="brand">Melody Circle</span><p class="tagline"><span>songs</span><i></i><span>connection</span><i></i><span>growth</span></p></div>
+        <div><span class="brand">Melody Circle</span><p class="tagline"><span>music</span><i></i><span>connection</span><i></i><span>community</span></p></div>
       </div>
       <p>Mommy + Me Music + Movement · Miami</p>
       <p>© 2026 Melody Circle</p>

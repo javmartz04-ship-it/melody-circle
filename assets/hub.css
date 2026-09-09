@@ -41,11 +41,21 @@
 .rings{position:absolute; inset:0; pointer-events:none}
 .rings svg{width:100%; height:100%; display:block}
 .rings circle{fill:none; stroke:#FFFDF9; stroke-width:1.2; opacity:.22}
-.stage .roundel{width:min(200px, 34%); position:relative; filter:drop-shadow(0 22px 34px rgba(58,58,42,.28)); margin-bottom:22px}
-.stage .roundel svg{width:100%; height:100%; display:block}
-.stage-words{font-family:var(--display); font-weight:500; font-size:clamp(40px, 4vw, 58px); line-height:1.02; color:#FFFDF9; text-shadow:0 2px 12px rgba(58,58,42,.15)}
-.stage-words em{display:block; font-style:italic; font-weight:400; color:#F6E2D5}
-.stage-cap{display:inline-block; margin-top:22px; padding:9px 16px; border-radius:999px; background:rgba(255,253,249,.92); font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--sage-deep)}
+.stage-body{position:relative; width:100%; display:flex; flex-direction:column; align-items:center}
+.melody{width:100%; max-width:640px; height:auto; display:block; overflow:visible}
+.melody .rd{filter:drop-shadow(0 22px 34px rgba(58,58,42,.35)); opacity:0; transform-box:fill-box; transform-origin:50% 50%; scale:.8; transition:opacity .9s var(--ease-out) .5s, scale 1.2s var(--ease-spring) .5s}
+.melody .staff{fill:none; stroke:#FFFDF9; stroke-width:2.2; stroke-linecap:round; opacity:.85; stroke-dasharray:720; stroke-dashoffset:720; transition:stroke-dashoffset 2.2s var(--ease-out) 1s}
+.melody .note{fill:#FFFDF9; stroke:#FFFDF9; stroke-width:2.4; stroke-linecap:round; transform-box:fill-box; transform-origin:50% 100%; opacity:0; scale:.4; transition:opacity .5s var(--ease-out), scale .9s var(--ease-spring)}
+.melody .note path{fill:none} .melody .note .flag{fill:#FFFDF9; stroke:none}
+.melody .n1{transition-delay:1.45s} .melody .n2{transition-delay:2.05s} .melody .n3{transition-delay:2.65s}
+.melody .lyric{font-family:var(--display); font-weight:500; font-size:50px; fill:#FFFDF9; opacity:0; transform-box:fill-box; transform-origin:50% 100%; translate:0 12px; transition:opacity .8s var(--ease-out), translate .9s var(--ease-out)}
+.melody .lyric.em{font-style:italic; font-weight:400; fill:#F6E2D5}
+.melody .w1{transition-delay:1.6s} .melody .w2{transition-delay:2.2s} .melody .w3{transition-delay:2.8s}
+html.fonts-in .melody .rd{opacity:1; scale:1}
+html.fonts-in .melody .staff{stroke-dashoffset:0}
+html.fonts-in .melody .note{opacity:1; scale:1}
+html.fonts-in .melody .lyric{opacity:1; translate:0 0}
+.stage-cap{display:inline-block; margin-top:6px; padding:9px 16px; border-radius:999px; background:rgba(255,253,249,.92); font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--sage-deep)}
 .stage .garland{top:-30px; left:-3%; right:-2%}
 .d-stage-note{left:8%; bottom:14%; width:36px; height:50px; color:#FFFDF9; opacity:.85; rotate:-10deg}
 .d-stage-fl{right:6%; bottom:10%; width:70px; height:104px; rotate:10deg; opacity:.95}
@@ -220,8 +230,8 @@ body.sheet-open{overflow:hidden}
   .cta-pair .btn{width:100%; justify-content:space-between}
   .nextup a,.nextup .nu{grid-template-columns:56px 1fr auto; gap:12px}
   .chip{width:56px} .chip b{font-size:22px}
-  .stage-in{min-height:440px; padding:48px 20px}
-  .stage-words{font-size:38px}
+  .stage-in{min-height:400px; padding:40px 16px}
+  .melody .lyric{font-size:56px}
   .cal-wd{font-size:10px; letter-spacing:.06em}
   .cal-day{font-size:14px}
   .cal-day.ev .in small{display:none}
@@ -231,3 +241,5 @@ body.sheet-open{overflow:hidden}
   .post{--rot:2deg}
   .hub-close{padding-top:130px}
 }
+
+@media (prefers-reduced-motion:reduce){ .melody .rd,.melody .staff,.melody .note,.melody .lyric{transition:none!important; opacity:1!important; scale:1!important; translate:0 0!important; stroke-dashoffset:0!important} }

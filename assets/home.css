@@ -93,11 +93,11 @@ section{scroll-margin-top:96px; position:relative}
 /* ---------- decorations ---------- */
 .deco{position:absolute; pointer-events:none; display:block}
 .deco svg{width:100%; height:100%; display:block; overflow:visible}
-.float{animation:floaty var(--dur, 8s) ease-in-out infinite; animation-delay:var(--del, 0s)}
+.float{animation:none}
 @keyframes floaty{0%,100%{translate:0 0} 50%{translate:0 -8px}}
-.float.soft{animation-name:floaty-soft}
+.float.soft{rotate:var(--r, 0deg)}
 @keyframes floaty-soft{0%,100%{translate:0 0; rotate:var(--r, 0deg)} 50%{translate:0 -5px; rotate:calc(var(--r, 0deg) + 2.5deg)}}
-.gl{transform-box:fill-box; transform-origin:50% 0%; animation:sway 4.6s ease-in-out infinite; animation-delay:calc(var(--i, 0) * -.37s)}
+.gl{transform-box:fill-box; transform-origin:50% 0%; animation:sway 4.6s ease-in-out 3; animation-delay:calc(var(--i, 0) * -.37s)}
 @keyframes sway{0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)}}
 .c-sage{color:var(--sage)} .c-peach{color:var(--peach)} .c-tan{color:var(--tan)} .c-hill{color:var(--hill)}
 
@@ -151,6 +151,9 @@ body.menu-open .burger i:nth-child(1){transform:rotate(45deg)} body.menu-open .b
 .hero .tagline{margin-bottom:26px}
 .hero .lead{max-width:30ch; margin-bottom:34px; font-size:clamp(17px, 1.3vw, 19px)}
 .d-hero-sprig{left:-112px; top:4px; width:88px; height:132px; color:var(--sage)}
+.d-hero-mark{left:-124px; top:-6px; width:96px; height:158px; opacity:0; scale:.7; transform-origin:50% 100%; transition:opacity .9s var(--ease-out) .5s, scale 1.2s var(--ease-spring) .5s}
+html.fonts-in .d-hero-mark{opacity:1; scale:1}
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
 .d-hero-note{right:-6px; top:-52px; width:34px; height:48px; color:var(--peach); rotate:8deg}
 .d-hero-flourish{left:0; bottom:-46px; width:64px; height:32px; color:var(--peach)}
 .hero-fig{position:relative; z-index:1; margin-right:calc(-1 * var(--gutter))}
@@ -308,12 +311,13 @@ html.fonts-in .sticker{scale:1; opacity:1}
 }
 @media (max-width:1180px){
   .d-hero-sprig{left:-68px; width:64px; height:96px}
+  .d-hero-mark{left:-92px; width:72px; height:118px}
   .d-about-sprig,.d-sched-fl,.d-sched-note,.d-beat-fl,.d-beat-fr{display:none}
 }
 @media (max-width:1040px){
   .hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:32px}
   .hero-fig .core{aspect-ratio:5/4}
-  .d-hero-sprig{display:none}
+  .d-hero-sprig,.d-hero-mark{display:none}
   .row{grid-template-columns:130px 100px 1fr 1fr auto; gap:14px}
   .d-close-branch-r{width:130px; height:180px; right:-30px}
 }
