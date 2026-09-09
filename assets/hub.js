@@ -1,8 +1,8 @@
 /* =====================================================================
    MELODY CIRCLE - hub script: events, calendar, registration sheet.
    Data comes from assets/events.js (window.MELODY_EVENTS, window.MELODY_HUB).
-   Nothing is sent anywhere: registrations are kept in localStorage and
-   finished by text message, as the reference hub does. See NOTES.md.
+   Registrations are kept in localStorage, POSTed to CONFIG.webhook when one is
+   set, and paid by Zelle on step 2 (text is for questions only). See NOTES.md.
    ===================================================================== */
 (function () {
   "use strict";
