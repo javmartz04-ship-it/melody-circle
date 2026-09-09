@@ -77,7 +77,9 @@ assert ":is(" not in css and ":where(" not in css
 
 reset = f"""
 /* ---- element reset inside the wrapper: GHL themes style bare tags, the design styles classes ---- */
-{ROOT} div,{ROOT} span,{ROOT} section,{ROOT} article,{ROOT} aside,{ROOT} nav,{ROOT} header,{ROOT} footer,{ROOT} main,{ROOT} form,{ROOT} figure,{ROOT} figcaption,{ROOT} label,{ROOT} small,{ROOT} b,{ROOT} strong,{ROOT} em,{ROOT} i,{ROOT} ul,{ROOT} li,{ROOT} h1,{ROOT} h2,{ROOT} h3,{ROOT} h4,{ROOT} p,{ROOT} a{{background:transparent; margin:0; padding:0; border:0; border-radius:0; box-shadow:none; text-shadow:none; text-decoration:none; text-transform:none; letter-spacing:normal; max-width:none; float:none; color:inherit; font-family:inherit; line-height:inherit; text-align:inherit; opacity:1}}
+{ROOT} div,{ROOT} section,{ROOT} article,{ROOT} aside,{ROOT} nav,{ROOT} header,{ROOT} footer,{ROOT} main,{ROOT} form,{ROOT} figure,{ROOT} figcaption,{ROOT} ul,{ROOT} li,{ROOT} h1,{ROOT} h2,{ROOT} h3,{ROOT} h4,{ROOT} p,{ROOT} a{{background:transparent; margin:0; padding:0; border:0; border-radius:0; box-shadow:none; text-shadow:none; text-decoration:none; text-transform:none; letter-spacing:normal; max-width:none; float:none; color:inherit; font-family:inherit; line-height:inherit; text-align:inherit; opacity:1}}
+/* inline text elements keep what they inherit from their classed parent (a .btn's label span must stay uppercase) */
+{ROOT} span,{ROOT} label,{ROOT} small,{ROOT} b,{ROOT} strong,{ROOT} em,{ROOT} i{{background:transparent; margin:0; padding:0; border:0; box-shadow:none; text-shadow:none; text-decoration:none; float:none; font-family:inherit}}
 {ROOT} h1,{ROOT} h2,{ROOT} h3,{ROOT} h4{{font-weight:inherit; font-style:normal}}
 {ROOT} b,{ROOT} strong{{font-weight:700}} {ROOT} em,{ROOT} i{{font-style:italic}}
 {ROOT} ul,{ROOT} li{{list-style:none}}

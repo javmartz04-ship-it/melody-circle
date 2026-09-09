@@ -3,7 +3,9 @@
 <style>
 
 /* ---- element reset inside the wrapper: GHL themes style bare tags, the design styles classes ---- */
-#mc-root div,#mc-root span,#mc-root section,#mc-root article,#mc-root aside,#mc-root nav,#mc-root header,#mc-root footer,#mc-root main,#mc-root form,#mc-root figure,#mc-root figcaption,#mc-root label,#mc-root small,#mc-root b,#mc-root strong,#mc-root em,#mc-root i,#mc-root ul,#mc-root li,#mc-root h1,#mc-root h2,#mc-root h3,#mc-root h4,#mc-root p,#mc-root a{background:transparent; margin:0; padding:0; border:0; border-radius:0; box-shadow:none; text-shadow:none; text-decoration:none; text-transform:none; letter-spacing:normal; max-width:none; float:none; color:inherit; font-family:inherit; line-height:inherit; text-align:inherit; opacity:1}
+#mc-root div,#mc-root section,#mc-root article,#mc-root aside,#mc-root nav,#mc-root header,#mc-root footer,#mc-root main,#mc-root form,#mc-root figure,#mc-root figcaption,#mc-root ul,#mc-root li,#mc-root h1,#mc-root h2,#mc-root h3,#mc-root h4,#mc-root p,#mc-root a{background:transparent; margin:0; padding:0; border:0; border-radius:0; box-shadow:none; text-shadow:none; text-decoration:none; text-transform:none; letter-spacing:normal; max-width:none; float:none; color:inherit; font-family:inherit; line-height:inherit; text-align:inherit; opacity:1}
+/* inline text elements keep what they inherit from their classed parent (a .btn's label span must stay uppercase) */
+#mc-root span,#mc-root label,#mc-root small,#mc-root b,#mc-root strong,#mc-root em,#mc-root i{background:transparent; margin:0; padding:0; border:0; box-shadow:none; text-shadow:none; text-decoration:none; float:none; font-family:inherit}
 #mc-root h1,#mc-root h2,#mc-root h3,#mc-root h4{font-weight:inherit; font-style:normal}
 #mc-root b,#mc-root strong{font-weight:700} #mc-root em,#mc-root i{font-style:italic}
 #mc-root ul,#mc-root li{list-style:none}
