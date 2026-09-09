@@ -120,7 +120,7 @@
   function fillChip(ev) {
     var d = parse(ev.date);
     sheet.querySelectorAll("[data-ev-chip]").forEach(function (el) {
-      el.innerHTML = '<span class="chip"><b>' + d.getDate() + '</b><small>' + mon3(d) + '</small></span><span><span class="t">' + esc(ev.title) + '</span><span class="d">' + DAYS[d.getDay()] + ', ' + esc(ev.start) + ' to ' + esc(ev.end) + ' · <b>' + price(ev) + (ev.price > 0 ? ' per child' + (ev.sibling ? ' · $' + ev.sibling + ' per sibling' : '') : '') + '</b></span></span>';
+      el.innerHTML = '<span class="chip"><b>' + d.getDate() + '</b><small>' + mon3(d) + '</small></span><span><span class="t">' + esc(ev.title) + '</span><span class="d">' + DAYS[d.getDay()] + ', ' + esc(ev.start) + ' to ' + esc(ev.end) + '</span><span class="d"><b>' + price(ev) + (ev.price > 0 ? ' per child' + (ev.sibling ? ' · $' + ev.sibling + ' per sibling' : '') : '') + '</b></span></span>';
     });
   }
   function openSheet(id) {

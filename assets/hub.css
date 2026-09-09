@@ -23,10 +23,10 @@
 .d-hub-sprig{left:-110px; top:0; width:86px; height:130px; color:var(--sage)}
 .d-hub-note{right:6%; top:-56px; width:32px; height:46px; color:var(--peach); rotate:8deg}
 .nextup{border-top:1px solid var(--hair-strong)}
-.nextup a,.nextup .nu{display:grid; grid-template-columns:62px 1fr auto; gap:18px; align-items:center; padding:16px 4px; border-bottom:1px solid var(--hair-strong); transition:background-color .4s var(--ease)}
+.nextup a,.nextup .nu{display:grid; grid-template-columns:74px 1fr auto; gap:18px; align-items:center; padding:16px 4px; border-bottom:1px solid var(--hair-strong); transition:background-color .4s var(--ease)}
 @media (hover:hover){ .nextup a:hover{background:rgba(255,253,249,.5)} }
-.chip{width:62px; text-align:center; border-radius:12px; background:#FFFDF9; box-shadow:0 0 0 1px var(--hair), 0 8px 18px -12px rgba(58,58,42,.35); padding:8px 0 7px}
-.chip b{display:block; font-family:var(--display); font-weight:500; font-size:26px; line-height:1; color:var(--clay-deep)}
+.chip{width:74px; text-align:center; border-radius:12px; background:#FFFDF9; box-shadow:0 0 0 1px var(--hair), 0 8px 18px -12px rgba(58,58,42,.35); padding:8px 0 7px}
+.chip b{display:block; font-family:var(--display); font-weight:500; font-size:36px; line-height:1; color:var(--clay-deep)}
 .chip small{display:block; font-size:10.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px}
 .nextup .t{display:block; font-weight:700; color:var(--ink); font-size:16px}
 .nextup .d{display:block; font-size:13.5px; color:var(--body); margin-top:2px}
@@ -166,9 +166,9 @@ html.fonts-in .melody .lyric{opacity:1; translate:0 0}
 .sheet .h3 em{font-style:italic; font-weight:400; color:var(--clay)}
 .sheet .h3:focus{outline:none}
 .sheet .sub{color:var(--body); font-size:15px; margin-bottom:22px}
-.ev-chip{display:grid; grid-template-columns:56px 1fr; gap:14px; align-items:center; padding:12px 14px; border-radius:16px; background:rgba(240,211,191,.28); margin-bottom:22px}
-.ev-chip .chip{width:56px; padding:6px 0 5px} .ev-chip .chip b{font-size:22px}
-.ev-chip .t{display:block; font-weight:700; color:var(--ink); font-size:15px} .ev-chip .d{display:block; font-size:13px; color:var(--body)}
+.ev-chip{display:grid; grid-template-columns:74px 1fr; gap:16px; align-items:center; padding:12px 14px; border-radius:16px; background:rgba(240,211,191,.28); margin-bottom:22px}
+.ev-chip .chip{width:74px; padding:9px 0 8px} .ev-chip .chip b{font-size:36px}
+.ev-chip .t{display:block; font-weight:700; color:var(--ink); font-size:16px; margin-bottom:2px} .ev-chip .d{display:block; font-size:13.5px; color:var(--body); line-height:1.45}
 .sheet .field{display:flex; flex-direction:column; gap:7px; margin-bottom:14px; min-width:0}
 .sheet .field > label{font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
 .sheet .field input,.sheet .field select,.sheet .field textarea{width:100%; min-height:50px; padding:12px 16px; border-radius:var(--r-btn); border:1px solid rgba(58,58,42,.16); background:#fff; color:var(--ink); font:inherit; font-size:16px; line-height:1.3; -webkit-appearance:none; appearance:none; transition:border-color .35s var(--ease), box-shadow .35s var(--ease)}
@@ -245,8 +245,10 @@ body.sheet-open{overflow:hidden}
   .hub-h1{font-size:min(80px, 21.6cqw)}
   .d-hub-note{top:-8px; right:2%; width:26px; height:38px}
   .cta-pair .btn{width:100%; justify-content:space-between}
-  .nextup a,.nextup .nu{grid-template-columns:56px 1fr auto; gap:12px}
-  .chip{width:56px} .chip b{font-size:22px}
+  .nextup a,.nextup .nu{grid-template-columns:66px 1fr auto; gap:12px}
+  .chip{width:66px} .chip b{font-size:30px}
+  .ev-chip{grid-template-columns:66px 1fr; gap:12px; padding:12px 12px} .ev-chip .chip{width:66px} .ev-chip .chip b{font-size:30px}
+  .ev-chip > span{min-width:0} .ev-chip .d{font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .stage-in{min-height:400px; padding:40px 16px}
   .melody .lyric{font-size:56px}
   .cal-wd{font-size:10px; letter-spacing:.06em}
