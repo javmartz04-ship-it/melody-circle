@@ -130,7 +130,7 @@ armor_js = """
 
 fonts = '<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">'
 
-embed = f"""<!-- Melody Circle · hub page · GoHighLevel embed. Paste the whole thing into one Custom Code element on an otherwise empty page. Built from builds/melody-circle-funnel (hub.html + assets). Images load from {BASE}. -->
+embed = f"""<!-- Melody Circle hub page, GoHighLevel embed. Paste the whole thing into one Custom Code element on an otherwise empty page. Built from builds/melody-circle-funnel (hub.html + assets). Images load from {BASE}. -->
 {fonts}
 <style>
 {reset}
