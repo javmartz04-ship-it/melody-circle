@@ -9,6 +9,7 @@
   var doc = document, reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var EVENTS = (Array.isArray(window.MELODY_EVENTS) ? window.MELODY_EVENTS : []).slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; });
   var HUB = window.MELODY_HUB || {};
+  var PAID = {}; /* paid registrations per event id, filled by the spot counter below */
   var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   var WORDS = ["No","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"];
@@ -16,29 +17,51 @@
   function parse(iso) { var p = iso.split("-").map(Number); return new Date(p[0], p[1] - 1, p[2]); }
   function mon3(d) { return MONTHS[d.getMonth()].slice(0, 3); }
   function price(ev) { return ev.price > 0 ? "$" + ev.price : "Complimentary"; }
-  function isOpen(ev) { return ev.status === "open"; }
+  function isOpen(ev) { return ev.status === "open" && !isFull(ev); }
   var today = new Date(); today.setHours(0, 0, 0, 0);
   var upcoming = EVENTS.filter(function (e) { return parse(e.date) >= today; });
   var featured = upcoming.length ? upcoming : EVENTS;
   var nextOpen = EVENTS.filter(isOpen)[0] || null;
   var featMonth = featured.length ? parse(featured[0].date) : today;
 
+  /* ---------- spot counter ----------
+     PAID[event id] = paid registrations reported by the counter web app
+     (counter/Code.gs). The page renders from events.js first, then swaps the
+     live number in; a missing or broken counter never blanks anything. */
+  function cap(ev) { return Number(ev.capacity || HUB.capacity || 0); }
+  function known(ev) { return typeof PAID[ev.id] === "number"; }
+  function taken(ev) { return known(ev) ? PAID[ev.id] : 0; }
+  function left(ev) { return Math.max(0, cap(ev) - taken(ev)); }
+  function isFull(ev) { return ev.status === "open" && cap(ev) > 0 && known(ev) && taken(ev) >= cap(ev); }
+  function nextOpenEv() { return EVENTS.filter(isOpen)[0] || null; }
+  function waitlistHref(ev) { return "sms:" + (HUB.phone || "").replace(/\D/g, "") + "?&body=" + encodeURIComponent("Hi " + (HUB.host || "") + ", the " + ev.title + " is full. Please add me to the waitlist or tell me about the next circle."); }
+  function spotsLine(ev) {
+    if (ev.status !== "open" || cap(ev) <= 0) return "";
+    if (isFull(ev)) return '<div class="spots full"><span class="bar"><i style="width:100%"></i></span><span class="txt"><b>Full.</b> All ' + cap(ev) + ' spots are taken.</span></div>';
+    if (!known(ev)) return '<div class="spots"><span class="txt">' + cap(ev) + ' spots in this circle.</span></div>';
+    var pct = Math.round(taken(ev) / cap(ev) * 100);
+    return '<div class="spots"><span class="bar"><i style="width:' + pct + '%"></i></span><span class="txt"><b>' + taken(ev) + ' of ' + cap(ev) + '</b> spots taken, <b>' + left(ev) + ' left</b>.</span></div>';
+  }
+
   /* ---------- hero: next up + stage caption ---------- */
   var nextup = doc.querySelector("#nextup");
-  if (nextup) {
+  function renderHero() {
+    if (!nextup) return;
     nextup.innerHTML = featured.slice(0, 2).map(function (ev) {
       var d = parse(ev.date);
       var chip = '<span class="chip"><b>' + d.getDate() + '</b><small>' + mon3(d) + '</small></span>';
       if (isOpen(ev)) {
-        return '<a href="#circles" data-register="' + esc(ev.id) + '">' + chip + '<span><span class="t">Register for the next circle</span><span class="d">' + DAYS[d.getDay()] + ' at ' + esc(ev.start) + (ev.price > 0 ? ' · <b>$' + ev.price + ' per child' + (ev.sibling ? ' · $' + ev.sibling + ' per sibling' : '') + '</b>' : ' · Complimentary') + '</span></span><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h14M12 6l6 6-6 6"/></svg></span></a>';
+        var spots = known(ev) && cap(ev) > 0 ? '<span class="d spots-d">' + left(ev) + ' of ' + cap(ev) + ' spots left</span>' : '';
+        return '<a href="#circles" data-register="' + esc(ev.id) + '">' + chip + '<span><span class="t">Register for the next circle</span><span class="d">' + DAYS[d.getDay()] + ' at ' + esc(ev.start) + (ev.price > 0 ? ', <b>$' + ev.price + ' per child' + (ev.sibling ? ', $' + ev.sibling + ' per sibling' : '') + '</b>' : ', complimentary') + '</span>' + spots + '</span><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h14M12 6l6 6-6 6"/></svg></span></a>';
       }
-      return '<div class="nu">' + chip + '<span><span class="t">' + esc(ev.title) + '</span><span class="d">' + DAYS[d.getDay()] + ' at ' + esc(ev.start) + '</span></span><span class="closed">' + (ev.status === "soon" ? "Soon" : "Closed") + '</span></div>';
+      var state = isFull(ev) ? "Full" : (ev.status === "soon" ? "Soon" : "Closed");
+      return '<div class="nu">' + chip + '<span><span class="t">' + esc(ev.title) + '</span><span class="d">' + DAYS[d.getDay()] + ' at ' + esc(ev.start) + '</span></span><span class="closed">' + state + '</span></div>';
     }).join("");
   }
-  var cap = doc.querySelector("#stage-cap");
-  if (cap) {
+  var cap_ = doc.querySelector("#stage-cap");
+  if (cap_) {
     var n = EVENTS.filter(function (e) { var d = parse(e.date); return d.getMonth() === featMonth.getMonth() && d.getFullYear() === featMonth.getFullYear(); }).length;
-    cap.textContent = (WORDS[n] || n) + " circle" + (n === 1 ? "" : "s") + " this " + MONTHS[featMonth.getMonth()];
+    cap_.textContent = (WORDS[n] || n) + " circle" + (n === 1 ? "" : "s") + " this " + MONTHS[featMonth.getMonth()];
   }
   doc.querySelectorAll("[data-month-title]").forEach(function (el) { el.textContent = MONTHS[featMonth.getMonth()] + " circles"; });
   doc.querySelectorAll("[data-insta]").forEach(function (el) { el.textContent = "@" + (HUB.instagram || "melodycircle"); });
@@ -51,25 +74,32 @@
     pin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.8-6 10-6 10Z"/><circle cx="12" cy="11" r="2.2"/></svg>',
     note: '<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="8.5" cy="17" rx="3.4" ry="2.4" transform="rotate(-15 8.5 17)"/><path d="M11.6 16.2V5c2.8 1 4.6 3 4.2 6.5"/></svg>'
   };
-  if (cards) {
+  var cardsRendered = false;
+  function renderCards() {
+    if (!cards) return;
     cards.innerHTML = featured.slice(0, 2).map(function (ev, i) {
-      var d = parse(ev.date), open = isOpen(ev);
+      var d = parse(ev.date), open = isOpen(ev), full = isFull(ev);
       var act = open
         ? '<button class="btn lg" type="button" data-register="' + esc(ev.id) + '"><span>Join a Circle</span><span class="ico" aria-hidden="true"><svg><use href="#ic-arrow"/></svg></span></button><span class="per">' + (ev.price > 0 ? "<b>$" + ev.price + " per child</b>" + (ev.sibling ? "<br><b>$" + ev.sibling + " per sibling</b>" : "") : "Complimentary") + '</span>'
-        : '<span class="pill">' + (ev.status === "soon" ? "Registration opens soon" : "Registration closed") + '</span>';
-      return '<article class="card ' + (open ? "open" : "closed") + '" data-reveal style="--i:' + i + '"><div class="card-in">' +
-        '<p class="lab">' + esc(ev.label) + '</p>' +
+        : full
+          ? '<span class="pill">Circle is full</span><a class="waitlist" href="' + waitlistHref(ev) + '">Text Tiffany for the waitlist</a>'
+          : '<span class="pill">' + (ev.status === "soon" ? "Registration opens soon" : "Registration closed") + '</span>';
+      var label = full ? "Full" : ev.label;
+      return '<article class="card ' + (open ? "open" : full ? "full" : "closed") + (cardsRendered ? " is-in" : "") + '" data-reveal style="--i:' + i + '"><div class="card-in">' +
+        '<p class="lab">' + esc(label) + '</p>' +
         '<div class="when"><span class="mon">' + mon3(d) + '</span><span class="day">' + d.getDate() + '</span></div>' +
         '<h3 class="h3">' + esc(ev.title) + '</h3>' +
         '<ul class="meta"><li>' + ICON.clock + esc(ev.start) + ' to ' + esc(ev.end) + '</li><li>' + ICON.pin + esc(ev.place) + '</li><li>' + ICON.note + esc(ev.ages) + '</li></ul>' +
-        '<p class="note">' + esc(ev.note) + '</p>' +
+        '<p class="note">' + esc(ev.note) + '</p>' + spotsLine(ev) +
         '<div class="act">' + act + '</div></div></article>';
     }).join("");
+    if (cardsRendered) return;
+    cardsRendered = true;
     /* injected after the page's reveal observer ran: observe them here, with a failsafe */
     var injected = [].slice.call(cards.querySelectorAll("[data-reveal]"));
     if (reduce || !("IntersectionObserver" in window)) injected.forEach(function (el) { el.classList.add("is-in"); });
     else { var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } }); }, { threshold: 0.1 }); injected.forEach(function (el) { io.observe(el); }); }
-    setTimeout(function () { injected.forEach(function (el) { el.classList.add("is-in"); }); }, 3500);
+    setTimeout(function () { [].slice.call(cards.querySelectorAll("[data-reveal]")).forEach(function (el) { el.classList.add("is-in"); }); }, 3500);
   }
 
   /* ---------- calendar ---------- */
@@ -88,26 +118,41 @@
       var out = d.getMonth() !== view.getMonth(), ev = byDate(iso(d)), isToday = d.getTime() === today.getTime();
       var cls = "cal-day" + (out ? " out" : "") + (isToday ? " today" : "");
       if (ev) {
-        cls += " ev " + (isOpen(ev) ? "open" : "closed");
-        html += '<button type="button" class="' + cls + '" data-day="' + esc(ev.id) + '" aria-label="' + esc(ev.title) + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + '"><span class="dot"><b>' + d.getDate() + '</b></span><small class="tag">' + esc(ev.short || "") + '</small></button>';
+        var full = isFull(ev);
+        cls += " ev " + (isOpen(ev) ? "open" : full ? "full" : "closed");
+        html += '<button type="button" class="' + cls + '" data-day="' + esc(ev.id) + '" aria-label="' + esc(ev.title) + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + (full ? ', full' : '') + '"><span class="dot"><b>' + d.getDate() + '</b></span><small class="tag">' + (full ? "Full" : esc(ev.short || "")) + '</small></button>';
       } else {
         html += '<div class="' + cls + '"><span>' + d.getDate() + '</span></div>';
       }
     }
     calGrid.innerHTML = html;
     var monthEvents = EVENTS.filter(function (e) { var d = parse(e.date); return d.getMonth() === view.getMonth() && d.getFullYear() === view.getFullYear(); });
-    var openEv = monthEvents.filter(isOpen)[0];
+    var openEv = monthEvents.filter(isOpen)[0], fullEv = monthEvents.filter(isFull)[0];
     if (calNote) {
-      if (openEv) { var od = parse(openEv.date); calNote.innerHTML = '<i aria-hidden="true"></i><span>Tap ' + MONTHS[od.getMonth()] + ' ' + od.getDate() + ' to register your child and secure a spot.</span>'; }
+      if (openEv) { var od = parse(openEv.date); calNote.innerHTML = '<i aria-hidden="true"></i><span>Tap ' + MONTHS[od.getMonth()] + ' ' + od.getDate() + ' to register your child and secure a spot' + (known(openEv) && cap(openEv) > 0 ? ', ' + left(openEv) + ' left' : '') + '.</span>'; }
+      else if (fullEv) { var fd = parse(fullEv.date); calNote.innerHTML = '<i aria-hidden="true" style="background:var(--sage-soft)"></i><span>' + MONTHS[fd.getMonth()] + ' ' + fd.getDate() + ' is full. Text Tiffany for the waitlist or check back for the next circle.</span>'; }
       else if (monthEvents.length) calNote.innerHTML = '<i aria-hidden="true" style="background:var(--sage-soft)"></i><span>Registration for this month has closed. Check back for the next circle.</span>';
       else calNote.innerHTML = '<i aria-hidden="true" style="background:var(--sage-soft)"></i><span>No circles this month yet. Follow along for the next date.</span>';
     }
   }
-  renderCal();
+  function renderAll() { nextOpen = nextOpenEv(); renderHero(); renderCards(); renderCal(); }
+  renderAll();
   var prev = doc.querySelector("#cal-prev"), next = doc.querySelector("#cal-next");
   if (prev) prev.addEventListener("click", function () { view = new Date(view.getFullYear(), view.getMonth() - 1, 1); renderCal(); });
   if (next) next.addEventListener("click", function () { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); renderCal(); });
 
+  /* ---------- live count from the counter web app ---------- */
+  function loadCounts() {
+    var url = HUB.counter || "";
+    if (!url) return;
+    var u = url + (url.indexOf("?") > -1 ? "&" : "?") + "t=" + Date.now();
+    fetch(u, { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (j) {
+      var c = j && (j.counts || j); if (!c || typeof c !== "object") return;
+      var changed = false;
+      Object.keys(c).forEach(function (k) { var n = Number(c[k]); if (isFinite(n) && n >= 0 && PAID[k] !== n) { PAID[k] = n; changed = true; } });
+      if (changed) { renderAll(); if (current && isFull(current) && sheet && sheet.classList.contains("is-open") && step1.classList.contains("on")) { closeSheet(); say("Sorry, that circle just filled up. Text Tiffany for the waitlist."); } }
+    }).catch(function (e) { console.warn("spot counter unavailable", e); });
+  }
   /* ---------- toast ---------- */
   var toast = doc.querySelector(".toast"), toastT;
   function say(msg) { if (!toast) return; toast.textContent = msg; toast.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(function () { toast.classList.remove("on"); }, 2400); }
@@ -120,13 +165,13 @@
   function fillChip(ev) {
     var d = parse(ev.date);
     sheet.querySelectorAll("[data-ev-chip]").forEach(function (el) {
-      el.innerHTML = '<span class="chip"><b>' + d.getDate() + '</b><small>' + mon3(d) + '</small></span><span><span class="t">' + esc(ev.title) + '</span><span class="d">' + DAYS[d.getDay()] + ', ' + esc(ev.start) + ' to ' + esc(ev.end) + '</span><span class="d"><b>' + price(ev) + (ev.price > 0 ? ' per child' + (ev.sibling ? ' · $' + ev.sibling + ' per sibling' : '') : '') + '</b></span></span>';
+      el.innerHTML = '<span class="chip"><b>' + d.getDate() + '</b><small>' + mon3(d) + '</small></span><span><span class="t">' + esc(ev.title) + '</span><span class="d">' + DAYS[d.getDay()] + ', ' + esc(ev.start) + ' to ' + esc(ev.end) + '</span><span class="d"><b>' + price(ev) + (ev.price > 0 ? ' per child' + (ev.sibling ? ', $' + ev.sibling + ' per sibling' : '') : '') + '</b></span></span>';
     });
   }
   function openSheet(id) {
     var ev = EVENTS.filter(function (e) { return e.id === id; })[0] || nextOpen;
     if (!ev) { say("No circle is open for registration right now."); return; }
-    if (!isOpen(ev)) { say(ev.status === "soon" ? "Registration for this circle opens soon." : "Registration for this circle has closed."); return; }
+    if (!isOpen(ev)) { say(isFull(ev) ? "This circle is full. Text Tiffany to join the waitlist." : ev.status === "soon" ? "Registration for this circle opens soon." : "Registration for this circle has closed."); return; }
     current = ev; fillChip(ev);
     if (typeof refreshKids === "function") refreshKids();
     step1.classList.add("on"); step2.classList.remove("on");
@@ -146,6 +191,9 @@
   });
   if (veil) veil.addEventListener("click", closeSheet);
   doc.addEventListener("keydown", function (e) { if (e.key === "Escape" && sheet && sheet.classList.contains("is-open")) closeSheet(); });
+  loadCounts();
+  setInterval(loadCounts, 90000);
+  doc.addEventListener("visibilitychange", function () { if (!doc.hidden) loadCounts(); });
   /* deep link: ?circle=<id> or #register */
   var want = new URLSearchParams(location.search).get("circle");
   if (want && EVENTS.some(function (e) { return e.id === want && isOpen(e); })) setTimeout(function () { openSheet(want); }, 600);
@@ -182,9 +230,9 @@
     var ev = current || nextOpen || {};
     var full = n >= MAX;
     addBtn.disabled = full; addBtn.setAttribute("aria-disabled", full ? "true" : "false");
-    addBtn.querySelector(".plus").textContent = full ? "\u2713" : "+";
+    addBtn.querySelector(".plus").textContent = "+";
     addBtn.querySelector(".plus + span").textContent = full ? "Maximum reached" : "Add a sibling";
-    if (addNote) addNote.textContent = full ? MAX + " children per registration" : (ev.sibling ? "$" + ev.sibling + " per sibling · " : "") + "up to " + MAX + " children";
+    if (addNote) addNote.textContent = full ? MAX + " children per registration" : (ev.sibling ? "$" + ev.sibling + " per sibling, " : "") + "up to " + MAX + " children";
   }
   function addKid() {
     if (kidRows().length >= MAX) return;
@@ -245,7 +293,7 @@
     try { var all = JSON.parse(localStorage.getItem(STORE) || "[]"); all.push(s); localStorage.setItem(STORE, JSON.stringify(all)); } catch (x) {}
     var go = form.querySelector('button[type="submit"]'), goLabel = go.querySelector("span");
     if (form.dataset.busy) return;
-    form.dataset.busy = "1"; go.setAttribute("aria-busy", "true"); go.classList.add("busy"); goLabel.textContent = "Saving your spot\u2026";
+    form.dataset.busy = "1"; go.setAttribute("aria-busy", "true"); go.classList.add("busy"); goLabel.textContent = "Saving your spot...";
     send(s).then(function (delivered) {
       delete form.dataset.busy; go.removeAttribute("aria-busy"); go.classList.remove("busy"); goLabel.textContent = "Review registration";
       showStep2(s, delivered);
@@ -257,7 +305,7 @@
     sum.innerHTML = "<b>Circle</b><span>" + esc(s.event) + ", " + esc(s.when) + "</span>" +
       "<b>" + (s.child_count === 1 ? "Little one" : "Little ones") + "</b><span>" + esc(kidsText(s)) + "</span>" +
       "<b>Grown-up</b><span>" + esc(s.parent) + "</span><b>Email</b><span>" + esc(s.email) + "</span><b>Phone</b><span>" + esc(s.phone) + "</span>" +
-      "<b>Price</b><span><strong>" + esc(s.price) + "</strong> for " + countWord(s.child_count) + (current.sibling && s.child_count > 1 ? " (" + money(current.price) + " + " + (s.child_count - 1) + " × " + money(current.sibling) + ")" : "") + "</span>";
+      "<b>Price</b><span><strong>" + esc(s.price) + "</strong> for " + countWord(s.child_count) + (current.sibling && s.child_count > 1 ? " (" + money(current.price) + " + " + (s.child_count - 1) + " x " + money(current.sibling) + ")" : "") + "</span>";
     var pay = step2.querySelector("#pay-copy");
     if (s.total > 0) pay.innerHTML = "To reserve your seat for yourself and " + (s.child_count === 1 ? "<b>" + esc(s.children[0].name) + "</b>" : "your <b>" + countWord(s.child_count) + "</b>") + ", send <b>" + esc(s.price) + "</b> via Zelle now to the number below. Your spot is held once the payment lands.";
     else pay.innerHTML = "This circle is complimentary. Your spot is held; just come sing with us.";

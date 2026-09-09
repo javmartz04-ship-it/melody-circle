@@ -144,9 +144,9 @@
       return '<label class="opt' + (c.full ? ' is-full' : '') + '">' +
         '<input type="radio" name="circle" value="' + esc(c.id) + '"' + checked + (c.full ? ' disabled' : '') + ' required>' +
         '<span class="dot" aria-hidden="true"></span>' +
-        '<span><span class="od">' + esc(c.day) + ' · ' + esc(c.time) + '</span>' +
+        '<span><span class="od">' + esc(c.day) + ', ' + esc(c.time) + '</span>' +
         '<span class="ot">' + esc(c.start) + ' to ' + esc(c.end) + (n ? ', ' + n + ' weekly sessions' : '') + '</span>' +
-        '<span class="ov">' + esc(c.venue) + (c.full ? ' · Full' : '') + '</span></span></label>';
+        '<span class="ov">' + esc(c.venue) + (c.full ? ', full' : '') + '</span></span></label>';
     }).join("");
   }
 

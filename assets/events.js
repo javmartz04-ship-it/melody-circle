@@ -17,6 +17,9 @@
               or "soon" (listed, registration not open yet)
    - note:    one sentence shown on the card
    - short:   the tiny word shown inside the calendar day, e.g. "$35"
+   - capacity: spots in this circle (leave out to use the hub default below).
+              The count of paid spots comes from the counter (see counter/README.md);
+              at capacity the circle shows as full and registration closes itself.
    The two dates below are the ones from the reference hub. Placeholders.
    ===================================================================== */
 window.MELODY_EVENTS = [
@@ -26,7 +29,7 @@ window.MELODY_EVENTS = [
     note: "Original songs, gentle movement, instruments and time for moms to connect.", short: "Launch" },
   { id: "sep24", date: "2026-09-24", start: "11:00 AM", end: "12:00 PM",
     title: "September Circle", label: "Registration open",
-    place: "The Collective Studio, Miami", ages: "Birth through age four", price: 35, sibling: 15, status: "open",
+    place: "The Collective Studio, Miami", ages: "Birth through age four", price: 35, sibling: 15, status: "open", capacity: 15,
     note: "Register your little one, then text us to secure your space.", short: "$35" }
 ];
 
@@ -37,5 +40,7 @@ window.MELODY_HUB = {
   host: "Tiffany",                         /* who reads the registrations */
   zelle: "Tiffany Dominguez",              /* the name Zelle shows for the number above */
   maxChildren: 4,                          /* children per registration, including the first */
-  tagline: "Mommy + Me Music + Movement · Miami"
+  capacity: 15,                            /* spots per circle unless a circle sets its own */
+  counter: "",                             /* the spot counter's web app URL (counter/README.md). Empty = no live count */
+  tagline: "Mommy + Me Music + Movement, Miami"
 };

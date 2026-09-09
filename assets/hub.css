@@ -102,6 +102,17 @@ html.fonts-in .melody .lyric{opacity:1; translate:0 0}
 .card .per{font-size:13px; letter-spacing:.04em; color:var(--ink); line-height:1.5}
 .card .per b{font-weight:700}
 @media (hover:hover){ .card.open:hover{transform:translateY(-4px); box-shadow:0 0 0 1px var(--hair), var(--shadow-lift)} }
+.spots{display:grid; gap:9px; margin:0 0 20px; padding:14px 16px; border-radius:14px; background:rgba(240,211,191,.22)}
+.spots .bar{height:6px; border-radius:6px; background:rgba(58,58,42,.10); overflow:hidden}
+.spots .bar i{display:block; height:100%; border-radius:6px; background:linear-gradient(90deg, var(--peach), var(--clay)); transition:width 1.2s var(--ease-out)}
+.spots .txt{font-size:13.5px; color:var(--body); line-height:1.45}
+.spots .txt b{color:var(--ink); font-weight:700}
+.spots.full{background:rgba(58,58,42,.06)} .spots.full .bar i{background:var(--sage)}
+.card.full .card-in{background:var(--lit-band)}
+.card.full .lab,.card.full .mon{color:#5A5348} .card.full .day{color:var(--sage-deep)} .card.full .meta li,.card.full .note{color:#4E4940}
+.waitlist{display:inline-block; font-size:13.5px; font-weight:700; color:var(--clay-deep); text-decoration:underline; text-underline-offset:3px; min-height:44px; display:inline-flex; align-items:center}
+.nextup .spots-d{color:var(--clay-deep); font-weight:700}
+.cal-day.ev.full .dot{background:var(--band)} .cal-day.ev.full .dot b{color:var(--sage-deep)} .cal-day.ev.full .tag{color:var(--ink)}
 .d-circles-fl{right:-2%; top:-10px; width:70px; height:104px; rotate:14deg}
 .d-circles-note{left:-1%; top:60px; width:30px; height:42px; color:var(--sage); rotate:-12deg}
 
