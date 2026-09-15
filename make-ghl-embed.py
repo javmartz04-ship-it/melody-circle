@@ -26,7 +26,7 @@ assert "</script" not in js.lower()
 # ---------- body markup ----------
 body = html.split("<body>", 1)[1].split("</body>", 1)[0]
 body = re.sub(r'<script src="assets/[^"]+"></script>\s*', "", body)
-body = body.replace('href="index.html"', f'href="{BASE}"')
+body = body.replace('href="index.html"', f'href="{HUB_URL}"')
 body = body.replace('href="hub.html"', f'href="{HUB_URL}"').replace('data-reserve="hub.html"', f'data-reserve="{HUB_URL}"')
 body = re.sub(r'(src|href|srcset)="assets/', rf'\1="{BASE}assets/', body)
 body = body.replace('href="', 'href="', 1)

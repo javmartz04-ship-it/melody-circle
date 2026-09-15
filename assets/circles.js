@@ -14,7 +14,7 @@
    The three circles below are the ones from the approved mockup.
    ===================================================================== */
 window.MELODY_CIRCLES = [
-  { id: "tuesday",   day: "Tuesdays",   time: "10:00 AM", start: "May 6",  end: "June 10", venue: "Oakleaf Studio", full: false },
-  { id: "wednesday", day: "Wednesdays", time: "9:30 AM",  start: "May 7",  end: "June 11", venue: "Oakleaf Studio", full: false },
-  { id: "saturday",  day: "Saturdays",  time: "10:30 AM", start: "May 10", end: "June 14", venue: "Oakleaf Studio", full: false }
+  { id: "tuesday",   day: "Tuesdays",   time: "10:00 AM", start: "May 6",  end: "June 10", venue: "The Collective Studio, Miami", full: false },
+  { id: "wednesday", day: "Wednesdays", time: "9:30 AM",  start: "May 7",  end: "June 11", venue: "The Collective Studio, Miami", full: false },
+  { id: "saturday",  day: "Saturdays",  time: "10:30 AM", start: "May 10", end: "June 14", venue: "The Collective Studio, Miami", full: false }
 ];
